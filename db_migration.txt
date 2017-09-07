@@ -1,0 +1,2 @@
+python manage.py db migrate -m 'text'
+python manage.py db upgrade

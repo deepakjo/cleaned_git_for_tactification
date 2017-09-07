@@ -1,0 +1,2 @@
+One more user logged in to predictthemove.com of name {{ username }}
+Total count of people logged in touched {{ no_of_new_logins }}

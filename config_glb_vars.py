@@ -1,0 +1,2 @@
+photos=''
+tactical_gifs=''

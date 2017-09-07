@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Day - HTML Bootstrap Template</title>
+
+    <!-- Bootstrap -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" rel="text/javascript">
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/animate.min.css') }}">
+	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet"> 
+	<link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet" />	
+    <!-- =======================================================
+        Theme Name: Day
+        Theme URL: https://bootstrapmade.com/day-multipurpose-html-template-for-free/
+        Author: BootstrapMade
+        Author URL: https://bootstrapmade.com
+    ======================================================= -->
+    </head>
+
+<script>
+    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    {% if now_running %}
+        var background_img_url = "{{ now_running.render_tactics_pic() }}";
+    {% endif %}
+</script>
+
+  <body data-spy="scroll" data-target=".navbar" data-offset="50">
+    {% import "bootstrap/wtf.html" as wtf %}
+    {% import "_macros.html" as macros %}
+
+	<header id="header">
+        <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                   <div class="btn-group">
+							<button type="button" class="btn btn-primary btn-sm"><h4>Tactification</h4>
+							</button>
+					</div>
+                </div>				
+                <div class="navbar-collapse collapse">							
+					<div class="menu">
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation">
+                                <div class="btn-group"> 
+                                    <a href="{{ url_for('.index') }}">
+                                        <button type="button" class="btn btn-primary">Home</button>
+                                    </a>
+                                </div>    
+                            </li>
+							<li role="presentation">
+                    		<div class="btn-group ">
+                    			{% if current_user.is_authenticated %}
+                        			<a href="{{ url_for('auth.logout', post_id=-1) }}">
+                        				<button type="button" class="btn btn-primary">SIGN OUT
+                        				</button>
+                        			</a>
+                    			{% else %}
+                        			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SigninModal"> SIGN IN
+                        			</button>
+                    			{% endif %}
+                    		</div>  
+                			</li>
+						</ul>
+					</div>
+				</div>		
+            </div><!--/.container-->
+        </nav><!--/nav-->		
+    </header><!--/header-->	
+
+    <div class="wallpaper">
+        <div class="container">
+			<div class="header-img">			
+              
+
+						<!--img src="{{ url_for('static', filename = 'tactification.jpg') }} " alt=""--> 
+			<div class="carousel-caption">
+				<div class="container">
+                	<div class="row">
+                    	<div class="col-md-10 col-md-offset-1">
+                            
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing</p>
+								
+								<form class="form-inline">
+									<div class="form-group">
+										<button type="button" class="btn btn-primary" onclick="changeVideo('xX4mEhA0D_I')" >
+											<span class="glyphicon glyphicon-play-circle"></span>
+                                            Inspired from
+                                        </button>                                        
+									</div>
+								</form>
+							</div>
+				    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>            
+
+    <br>
+    <br>
+
+    <!-- Modal -->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title"><span class="label label-primary">VIDEO</span></h4>
+          </div>      
+          <div class="modal-body">          
+            <iframe id="iframeYoutube" width="560" height="315"></iframe>             
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+	{% include "signin.html" %}
+	
+	<hr>
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 style="color:black">Bootstrap Tutorial</h1>      
+            <p style="color:black"> Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
+        </div>
+    </div>
+
+    {% if now_running %}
+        <section class="action">
+            <div class="container">
+                <a href="{{ url_for('.post', id=now_running.id) }}">
+                    <div class="left-text">
+                        <h4>{{ now_running.header }}</h4>
+                        <p>{{ now_running.body }}</p>
+                    </div>
+                    <div id="mainPost" class="right-image">
+                        <!--img src="{{ now_running.render_tactics_pic() }}" class="img-responsive" > 
+                        <p> {{ now_running.render_tactics_pic() }}</p> -->
+                    </div>
+                </a>    
+            </div>
+        </section>
+    {% endif %}
+	
+	<div class="gallery">
+		<div class="text-center">
+			<h2>Previous Posts</h2>
+        </div>
+        {% set new_container = 0 %}
+        {% for post in posts %}
+        {% if new_container is divisibleby 3 %}
+		    <div class="container">		
+                <div class="row">
+        {% endif %}    
+			        <div class="col-md-4">
+                        <a href="{{ url_for('.post', id=post.id) }}">
+                        <figure class="effect-marley">
+                            <img class="img-responsive" src="{{ post.render_tactics_pic() }}" alt=""/>
+                            <figcaption>
+                                <h4>{{ post.header }}</h4>
+                            </figcaption>			
+                        </figure>
+                        </a>
+                    </div>
+        {% set new_container = new_container + 1 %}               
+        {% if new_container is divisibleby 3 %}                    
+		    	</div>
+            </div>
+        {% endif %} 
+        {% endfor %}
+	</div>
+		
+    {% if pagination %}
+        <div class="text-center">
+            <div class="pagination">
+                {{ macros.pagination_widget(pagination, '.index') }}
+            </div>
+        </div>
+    {% endif %}
+
+	{% include "footer_file.html" %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/js/output.min.js"></script>
+
+</script>
+</body>
+</html>

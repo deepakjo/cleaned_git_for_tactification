@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail" src="{{ user.profile_pic_url(size=40) }}" width="100" height="100">
+    <table style="width:100%">
+	<tr>
+	    <th>Field</th>
+	    <th>Values</th>
+	</tr>
+	<tr>
+		<th>id<th>
+		<th>{{ user.id }}<th>
+	</tr>	
+	<tr>
+		<th>email<th>
+		<th>{{ user.email }}<th>
+	</tr>	
+	<tr>
+		<th>username<th>
+		<th>{{ user.username }}<th>
+	</tr>	
+	<tr>
+		<th>role_id<th>
+		<th>{{ user.role_id }}<th>
+	</tr>	
+	<tr>
+		<th>is_active<th>
+		<th>{{ user.is_active }}<th>
+	</tr>
+	<tr>
+		<th>is_via_oauth<th>
+		<th>{{ user.via_oauth }}<th>
+	</tr>
+	<tr>
+		<th>name<th>
+		<th>{{ user.name }}<th>
+	</tr>	
+	<tr>
+		<th>country<th>
+		<th>{{ user.country }}<th>
+	</tr>	
+	<tr>
+		<th>location<th>
+		<th>{{ user.location }}<th>
+	</tr>	
+	<tr>
+		<th>member since<th>
+		<th>{{ user.member_since }}<th>
+	</tr>	
+	<tr>
+		<th>last seen<th>
+		<th>{{ user.last_seen }}<th>
+	</tr>	
+	<tr>
+		<th>confirmed<th>
+		<th>{{ user.confirmed }}<th>
+	</tr>
+	<tr>
+		<th>profile_pic</th>
+		<th>{{ user.profile_pic }}</th>
+	</tr>
+	<tr>
+		<th>profile_url</th>
+		<th>{{ user.profile_url }}</th>
+	</tr>
+	<tr>
+		<th>About Me<th>
+		<th>{{ user.about_me }}<th>
+	</tr>
+    <tr>
+        <th>Role permission</th>
+        <th>{{ user.role.permissions }}</th>
+    </tr>
+
+    {% if user.name or user.location %}
+    <p>
+        {% if user.name %}{{ user.name }}{% endif %}
+        {% if user.location %}
+            From <a href="http://maps.google.com/?q={{ user.location }}">
+                {{ user.location }}
+            </a>
+        {% endif %}
+    </p>
+    {% endif %}
+
+    {% if current_user.is_administrator() %}
+    <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+    {% endif %}
+    {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+	{% if user == current_user %}
+	<a class="btn btn-default" href="{{ url_for('auth.edit_profile') }}">
+		Edit Profile
+	</a>
+	{% endif %}
+    <p>
+        Member since {{ moment(user.member_since).format('L') }}
+        Last seen {{ moment(user.last_seen).fromNow() }}.
+    </p>
+
+    {% if current_user.can(Permission.FOLLOW) and user != current_user %}
+        {% if not current_user.is_following(user) %}
+        <a href="{{ url_for('.follow', username=user.username) }}"
+            class="btn btn-primary">Follow</a>
+        {% else %}
+        <a href="{{ url_for('.unfollow', username=user.username) }}"
+            class="btn btn-primary">Follow</a>
+        {% endif %}
+    {% endif %}
+    <a href="{{ url_for('.followers', username=user.username) }}">
+        Followers: <span class="badge">{{ user.followers.count() }}</span>
+    </a>
+
+    <a href="{{ url_for('.followed_by', username=user.username) }}">
+        Following: <span class="badge">{{ user.followed.count() }}</span>
+    </a>
+    {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
+    | <span class="label label-default">Follows you</span>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} Flasky Login {% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Login</h1>
+</div>
+<div class="jumbotron">
+{{ wtf.quick_form(form, form_type="horizontal", horizontal_columns=('lg', 2, 10)) }}
+
+    New User? 
+    <a href="{{ url_for('auth.register') }}">
+        Click here to register
+    </a>
+    <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="true" data-auto-logout-link="true"></div>
+    <a href="{{ url_for('oauth_rt.oauth_authorize', provider='facebook') }}">FB login</a>
+    <a href="{{ url_for('oauth_rt.oauth_authorize', provider='twitter') }}">Twitter login</a>
+    Forgot Password? 
+    <a href="{{ url_for('auth.reset_pwd') }}">
+        Forgot password
+    </a>
+<p> Date and time is {{ moment(current_time).format('LLL') }} </p>
+
+<p> That was {{ moment(current_time).fromNow(refresh=True) }} </p>
+</div>
+
+{% endblock %}

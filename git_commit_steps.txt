@@ -1,0 +1,12 @@
+git clone https://github.com/deepakjo/blog.git
+cd blog/
+cp ../requirements.txt requirements.txt 
+git status
+git add requirements.txt 
+git commit -a
+git reset HEAD requirements.txt
+git commit -a
+git status
+git push
+history
+

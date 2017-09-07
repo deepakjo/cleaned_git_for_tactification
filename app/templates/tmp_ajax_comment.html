@@ -1,0 +1,48 @@
+
+<div class="row" ng-if="datareceived==true">
+    <div class="media">
+        <div class="media-left media-top">
+            {% if '{{resp_comment.is_anon}}' %}
+                <img class="media-object"
+                    src="{{ '{{resp_comment.pfl_pic}}' }}" style="width:60px">
+            {% else %}
+                <a href="{{ '{{resp_comment.url_for_u}}' }}">
+                    <img class="media-object"
+                        src="{{ '{{resp_comment.pfl_pic}}' }}" style="width:60px">
+                </a>
+            {% endif %}
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">
+                {% if '{{resp_comment.is_anon}}' %}
+                    <strong> {{ '{{resp_comment.uname}}' }} </strong>
+                {% else %}
+                    <a href="{{ '{{ resp_comment.url_for_u }}' }}">
+                        {{ '{{resp_comment.uname}}' }}
+                    </a>
+                {% endif %}
+
+
+            </h4>
+            <p>
+                <h3 class="blog-comment"> {{ '{{resp_comment.comment}}' }} </h3>
+            </p>
+
+           <h4 class="media-bottom">
+                <span>
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                    </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <a href="{{ url_for('main.delete_comment', id=10, post_id=post.id) }}">
+                    Delete
+                </a>
+                </div>
+                </div>
+                </span>
+            </h4>                
+        </div> 
+    </div>
+
+</div>
+
