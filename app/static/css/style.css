@@ -5,7 +5,7 @@
     Author URL: https://bootstrapmade.com
 */
 /* ==== Google font ==== */
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600);
+@import url('https://fonts.googleapis.com/css?family=Lora');
 @import url('font-awesome.css');
 /* ==== overwrite bootstrap standard ==== */
 @import url('animate.css');
@@ -13,7 +13,7 @@
 
 
 body {
-	font-family:'Open Sans', Arial, sans-serif;
+	font-family: 'Lora', Arial, sans-serif;
 	font-size:14px;
 	font-weight:300;
 	line-height:1.6em;
@@ -22,7 +22,7 @@ body {
 	overflow-x:hidden;
 }
 
-hi,h2,h3,h4,h5,h6 {
+h1,h2,h3,h4,h5,h6 {
 	color:#272727;
 	line-height:1.1em;
 }
@@ -31,6 +31,7 @@ p {
 	color:#aaa;
 	font-size:13px;
 }
+
 a {
     text-decoration:none;
     transition: all 0.1s ease-in-out;
@@ -139,7 +140,7 @@ a:hover {
 }
 
 .navbar-default {
-	background-color: #65AAF0;
+    background:#faf7f7;
 	border-color:#65AAF0;
 }
 
@@ -169,7 +170,7 @@ a:hover {
   background-size: 100% 100%;
   background-position: 0 0;
   background-repeat: no-repeat;
-  background-image: url(../tactification.jpg);
+  background-image: url(../bielsa.jpg);
 }
 
 #carousel-slider {
@@ -996,7 +997,7 @@ textarea#message{
 ============================ */
 footer {
 	padding:50px;
-  background:#65AAF0;
+  background:#faf7f7;
   display: block;
   position: relative;
 }
@@ -1095,7 +1096,7 @@ ul.social-network {
   -o-transition: all 0.3s ease-in-out;
 }
 .sub-footer  {
-	background:#272727;
+	background:#cac4c4;
 	padding:30px;
 }
 
@@ -1178,6 +1179,11 @@ p.post-body {
   color: #060606;
 }
 
+.running-post {
+  font-size: 18px;
+  color: #060606;
+}
+
 .modal-backdrop {
     /* bug fix - no overlay */    
     display: none;    
@@ -1196,4 +1202,8 @@ i {
 .login-button {
   width: 225px;
   length: 25px;
+}
+
+.img-circle {
+  border-radius: 50%;
 }

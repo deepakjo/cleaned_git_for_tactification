@@ -17,7 +17,7 @@ def new_post_temp():
     db.session.commit()
     return jsonify(post.to_json())
     
-@api_rt.route('/posts', methods=['POST'])
+@api_rt.route('/new_post', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
 def new_post():
  
@@ -62,6 +62,17 @@ def edit_post(id):
     post.body = body
     post.header = header
     db.session.add(post)
+    return jsonify(post.to_json())
+
+@api_rt.route('/posts/<int:id>', methods=['POST'])
+@permission_required(Permission.WRITE_ARTICLES)
+def delete_post(id):
+    """
+    :type id: int
+    """
+    post = Post.query.get_or_404(id)
+                 
+    db.session.delete(post)
     return jsonify(post.to_json())
 
 """ API to add comment through RESTful Calls 

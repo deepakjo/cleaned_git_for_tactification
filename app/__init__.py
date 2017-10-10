@@ -19,8 +19,11 @@ login_manager.login_view = 'auth.login'
 photos = UploadSet('photos', IMAGES)
 gifs = UploadSet('gifs', IMAGES)
 pagedown = PageDown()
+print 'Reaching'
 
 def create_app(config_name):
+    print 'create_app:', config_name
+
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)

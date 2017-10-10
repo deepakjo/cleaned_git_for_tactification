@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+7<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -43,62 +43,60 @@
 </script>   
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.10&appId=613455148848789";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    <script>  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '613455148848789',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v2.10'
+    });
+    FB.AppEvents.logPageView();
+  };
 
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+   </script>
 
-	<header id="header">
+<header id="header">
         <nav class="navbar navbar-default navbar-fixed-top" role="banner">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                   <div class="btn-group">
-						<button type="button" class="btn btn-primary"><h4>Tactification</h4>
-						</button>
-					</div>
-                </div>				
-                <div class="navbar-collapse collapse">							
-					<div class="menu">
-						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation">
-                                <div class="btn-group"> 
-                                    <a href="{{ url_for('.index') }}">
-                                        <button type="button" class="btn btn-primary">Home</button>
-                                    </a>
-                                </div>    
-                            </li>
-							<li role="presentation">
-                    		<div class="btn-group ">
-                    			{% if current_user.is_authenticated %}
-                        			<a href="{{ url_for('auth.logout', post_id=-1) }}">
-                        				<button type="button" class="btn btn-primary">Sign Out
-                        				</button>
-                        			</a>
-                    			{% else %}
-                        			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SigninModal"> SIGN IN
-                                    </button>
-                    			{% endif %}
-                    		</div>  
-                			</li>
-						</ul>
-					</div>
-				</div>		
+	
+					
+				<ul class="nav navbar-nav" role="tablist">
+					<li role="presentation">
+                        <div class="btn-group"> 
+                            <a href="{{ url_for('.index') }}">
+                                    <button id="home-btn" type="button" class="btn">Home</button>
+                            </a>
+                        </div>    
+                    </li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right" role="tablist">
+					<li role="presentation">
+                    	<div class="btn-group ">
+                    		{% if current_user.is_authenticated %}
+                        		<a href="{{ url_for('auth.logout', post_id=post.id) }}">
+                        			<button id="signout-btn" type="button" class="btn">SIGN OUT
+                        			</button>
+                        		</a>
+                    		{% else %}
+                        		<button id="signin-btn" type="button" class="btn" data-toggle="modal" data-target="#SigninModal"> SIGN IN
+                        		</button>
+                    		{% endif %}
+                    	</div>  
+                	</li>
+				</ul>		
             </div><!--/.container-->
         </nav><!--/nav-->		
     </header><!--/header-->	
 
-    
+    {% include "post_signin.html" %}
 
     <!-- Page Content -->
     <div class="container">
@@ -114,7 +112,7 @@
         <!-- Portfolio Item Heading -->
         <div class="row">
             <div class="col-md-8 col-xs-12">
-                <h1 class="post-header">{{ post.header }}
+                <h1 class="post-header" >{{ post.header }}
                 </h1>
             </div>
         </div>
@@ -136,8 +134,8 @@
         <div class="row">
             <div class="col-md-7 col-xs-6 col-xs-offset-6 col-md-offset-5">
                 <ul class="share">                    
-                    <li><button id="fb-shareBtn" type="button" onclick="fbShareButton({{ post_url }})"><i class="fa fa-facebook"></i></button></li>
-                    <li><button id="tw-shareBtn" type="button" onclick="fbs_click(post_url, post_hdr)"><i class="fa fa-twitter"></i></button></li>                    
+                    <li><button id="fb-shareBtn" type="button" onclick="fb_click(post_url, post_hdr)"><i class="fa fa-facebook img-circle"></i></button></li>
+                    <li><button id="tw-shareBtn" type="button" onclick="tw_click(post_url, post_hdr)"><i class="fa fa-twitter"></i></button></li>                    
                     <li><i class="fa fa-comments" title="comments">{{ no_of_comments }}</i></li>                
                 </ul>    
             </div>
@@ -145,7 +143,7 @@
 
         <div class="row">
             <div class="col-md-8 col-xs-12">
-                <p class="post-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+                <p class="post-body">{{ post.body }}</p>
             </div>
             <div class="col-md-4">
             </div> 
@@ -166,13 +164,13 @@
                         {% if current_user.is_authenticated %}
                             <textarea id="textIdwithUser" rows="10" cols="100" name="comment"></textarea>
                             <br>
-                            <button type="submit" id="submitWithOutName">SUBMIT</button>
+                            <button type="submit" id="submitWithOutName">Submit</button>
                         {% else %}
                             <input id="inputId" type="text" size="20" name="uname" placeholder="Name">
                             <br>
                             <textarea id="textIdwithOutUser" rows="10" cols="100" name="comment" placeholder="What do you think?"></textarea>
                             <br>
-                            <button type="submit" id="submitWithName">Submit Comments</button>
+                            <button type="submit" id="submitWithName">Submit</button>
                         {% endif %}
                     </div>
                     
@@ -191,6 +189,7 @@
         </div>
         <!-- ./row for comments-->
 
+        {% if rand_posts %}
         <!-- Related Projects Row -->
         <div class="row">
 
@@ -205,33 +204,9 @@
                     </a>
                 </div>
             {% endfor %}    
-
-            <!--div class="col-sm-3 col-xs-6">
-                <a href="#">
-                    <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-                </a>
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-                <a href="#">
-                    <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-                </a>
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-                <a href="#">
-                    <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-                </a>
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-                <a href="#">
-                    <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-                </a>
-            </div-->
-
         </div>
         <!-- /.row -->
+        {% endif %}
 
         <hr>
     </div>
@@ -250,35 +225,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <scrint type="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
-    <script type="text/javascript" src="../static/js/output.min.js"></script>
+    <script type="text/javascript" src="../static/js/post.min.js"></script>
 
-<div class="modal fade" id="SigninModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
 
-    	  <!-- Modal content-->
-      	<div class="modal-content">
-        	<div class="modal-header">
-          		<button type="button" class="close" data-dismiss="modal">&times;</button>
-          		<h4 class="modal-title"><span class="label label-primary">SIGN IN</span></h4>
-			</div>
-			
-        	<div class="modal-body">
-	         	<form>
-					<div class="text-center">
-					<button type="submit" class="btn btn-lg" style="background-color:#3B5998" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='facebook', post_id=post.id) }}">
-						<i class="fa fa-facebook-square fa-lg" style="color:#FFFFFF"></i>Login with facebook</button>	
-					<hr>					
-					<button type="submit" class="btn btn-lg" style="background-color:#00aced" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='twitter', post_id=post.id) }}">
-						<i class="fa fa-twitter-square fa-lg" style="color:#FFFFFF"></i>Login with Twitter </button>
-					</div>
-        		</form> 
-			</div>
-        	<div class="modal-footer">
-          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        	</div>
-        </div>
-   	</div>
-</div>
 </body>
 
 </html>

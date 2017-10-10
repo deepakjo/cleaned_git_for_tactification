@@ -32,6 +32,7 @@ def oauth_callback(provider):
 
     login_user(user, force=True)
     post_id = session.get('post_id', -1)
+    print 'post_id=', post_id
     try:
         session.pop('post_id')
     except KeyError:

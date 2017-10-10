@@ -13,8 +13,9 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    FLASKY_ADMIN = 'deepak_p_jose@yahoo.co.in'
-    FLASKY_MAIL_SENDER = 'Flasky Admin <deepak_p_jose@yahoo.co.in'
+    FLASKY_ADMIN = os.environ.get('FLASK_ADMIN') 
+    FLASKY_ADMIN_PWD = os.environ.get('ADMIN_PASSWORD')
+    FLASKY_MAIL_SENDER = 'Flasky Admin <admin@tactification.com'
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_USERNAME')
     UPLOADED_PHOTOS_DEST = os.getcwd() + '/profile_picture'
     UPLOADED_GIFS_DEST = os.getcwd() + '/gifs'
@@ -59,6 +60,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///' + os.path.join(basedir,
                                                                                                  'data-test.sqlite')
     def __init__(self):

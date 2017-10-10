@@ -1,3 +1,4 @@
+import os
 import re
 import unittest
 from flask import url_for
@@ -60,7 +61,7 @@ class FlaskClientTestCase(unittest.TestCase):
     
     def test_add_post(self):
         response = self.client.post(url_for('auth.register'), data=dict(
-            email= 'deepak_p_jose@yahoo.co.in',
+            email= os.environ.get('FLASK_ADMIN'),
             username= 'admin',
             password= 'cat',
             password2= 'cat',
@@ -70,7 +71,7 @@ class FlaskClientTestCase(unittest.TestCase):
         self.assertTrue(response.status_code == 200)
 
         response = self.client.post(url_for('auth.login'), data=dict(
-            email= 'deepak_p_jose@yahoo.co.in',
+            email= 'example@yahoo.co.in',
             password= 'cat'
         ), follow_redirects=True)
         print 'login_response', response.data

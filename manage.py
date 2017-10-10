@@ -6,13 +6,13 @@ and also setting config environment.
 import os
 from app import create_app, db
 from app.models import User, Role, Post, Comment
-from flask_script import Manager, Shell
+from flask_script import Manager, Shell, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_mail import Mail
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_CONFIG') or 'development')
 manager = Manager(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db)         
 
 ####Code coverage
 if os.environ.get('FLASK_COVERAGE'):
@@ -44,7 +44,7 @@ def test(coverage=False):
         os.execvp(sys.executable, [sys.executable] + sys.argv)
 
     import unittest
-    tests = unittest.TestLoader().discover('tests')
+    tests = unittest.TestLoader().discover('selenium')
     unittest.TextTestRunner(verbosity=2).run(tests)
     if COV:
         COV.stop()
@@ -70,5 +70,5 @@ def delete():
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command("db", MigrateCommand)
 
-if __name__ == '__main__':
-    manager.run()
+if __name__ == "__main__":
+        manager.run()

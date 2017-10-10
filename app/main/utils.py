@@ -28,8 +28,11 @@ def get_random_posts(id):
     rand_posts = []
     rand_numbers = []
 
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    if (posts is None):
+    posts = Post.query.order_by(Post.id.asc()).all()
+    if posts == None:
+        return None
+
+    if (len(posts) < 5):
         return None
 
     rand_numbers = random.sample(range(1, len(posts)), 5)
@@ -37,12 +40,13 @@ def get_random_posts(id):
     print 'list of rand_numbers', rand_numbers
 
     try: 
-        rand_numbers.remove(id)
+        rand_numbers.remove(id-1)
     except ValueError:
-        rand_numbers.pop(4)
+        rand_numbers.pop(len(rand_numbers) - 1)
 
-    for id in range(4):
-        idx = rand_numbers[id]
-        rand_posts.append(posts[idx])
+    print 'list of rand_numbers', rand_numbers
+
+    for i in rand_numbers:
+        rand_posts.append(posts[i])
 
     return rand_posts        

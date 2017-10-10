@@ -40,8 +40,7 @@ def index():
         pagination = get_pages(page=page)
         return render_template('index.html', form=form, posts=post_list, pagination=pagination)
 
-    if isinstance(posts[0].author, User):
-        now_running=posts[0]
+    now_running=posts[0]
         
     pagination = get_pages(page=page)
     posts = pagination.items
@@ -194,29 +193,29 @@ def post(id):
     
     post = get_post(id)
     
-    if current_user.is_authenticated:
-        form = CommentForm()
-    else:
-        form = AnonymousCommentForm()
+#    if current_user.is_authenticated:
+#        form = CommentForm()
+#    else:
+#        form = AnonymousCommentForm()
         
-    if form.validate_on_submit():
-        comment_value = form.comment.data
+#    if form.validate_on_submit():
+#        comment_value = form.comment.data
         
-        if (current_user.is_authenticated == False):
-            author_name = form.name.data
-        else:
-            author_name = None
+#        if (current_user.is_authenticated == False):
+#            author_name = form.name.data
+#        else:
+#            author_name = None
             
-        comment_in_json = get_comment_fields_in_json(body = comment_value,  author_name = author_name)
-        if (comment_in_json.get('result') == 'fail'):
-            flash('Your comment failed to publish')
-            return redirect(url_for('.post',  id=post.id,  page=-1))
+#        comment_in_json = get_comment_fields_in_json(body = comment_value,  author_name = author_name)
+#        if (comment_in_json.get('result') == 'fail'):
+#            flash('Your comment failed to publish')
+#            return redirect(url_for('.post',  id=post.id,  page=-1))
             
-        post_entry['post'] = post
-        comment_in_json.update(post_entry)
-        comment_obj = add_comment_to_db(comment_in_json)
-        flash('Your comment has been published')
-        return redirect(url_for('.post', id=post.id, page=-1))
+#        post_entry['post'] = post
+#        comment_in_json.update(post_entry)
+#        comment_obj = add_comment_to_db(comment_in_json)
+#        flash('Your comment has been published')
+#        return redirect(url_for('.post', id=post.id, page=-1))
 
     page = request.args.get('page', 1, type=int)
     if page == -1:
@@ -229,7 +228,7 @@ def post(id):
     comments = pagination.items
 
     rand_posts = get_random_posts(id)
-    return render_template('post.html', post=post, form=form,
+    return render_template('post.html', post=post, 
                            comments = comments, pagination=pagination,
                            rand_posts = rand_posts, no_of_comments=post.comments.count())
 
@@ -313,3 +312,16 @@ def followed_by(username):
 @main.app_context_processor
 def inject_permissions():
     return dict(Permission=Permission)
+
+@main.route('/shutdown')
+def server_shutdown():
+    if not current_app.testing:
+        print '404'
+        abort(404)
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    if not shutdown:
+        print '500'
+        abort(500)
+    shutdown()
+    print 'shutting down'
+    return 'Shutting Down'        

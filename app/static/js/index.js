@@ -1,5 +1,5 @@
 
-$(function() { 
+$(document).ready(function(){
     console.log("Right here");
     $('.action .right-image').css('background-image', 'url(' + background_img_url + ')');
 }); 

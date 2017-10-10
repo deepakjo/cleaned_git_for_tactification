@@ -1,0 +1,26 @@
+<div class="modal fade" id="SigninModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+
+    	  <!-- Modal content-->
+      	<div class="modal-content">
+        	<div class="modal-header">
+          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			
+        	<div class="modal-body">
+	         	<form>
+					<div class="text-center">
+					<button id="fb-login-btn" class="btn btn-lg login-button" style="background-color:#3B5998" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='facebook', post_id=post.id) }}">
+						<i class="fa fa-facebook-square fa-lg" style="color:#FFFFFF"></i> Login with facebook</button>	
+					<hr>					
+					<button id="tw-login-btn" class="btn btn-lg login-button" style="background-color:#00aced" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='twitter', post_id=post.id) }}">
+						<i class="fa fa-twitter-square fa-lg" style="color:#FFFFFF"></i> Login with Twitter </button>
+					</div>
+        		</form> 
+			</div>
+        	<div class="modal-footer">
+          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	</div>
+        </div>
+   	</div>
+</div>

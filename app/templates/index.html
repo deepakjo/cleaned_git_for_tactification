@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Day - HTML Bootstrap Template</title>
+    <title>Tactification</title>
 
     <!-- Bootstrap -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" rel="text/javascript">
-	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/animate.min.css') }}">
 	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet"> 
 	<link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet" />	
@@ -36,44 +36,33 @@
 	<header id="header">
         <nav class="navbar navbar-default navbar-fixed-top" role="banner">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                   <div class="btn-group">
-							<button type="button" class="btn btn-primary btn-sm"><h4>Tactification</h4>
-							</button>
-					</div>
-                </div>				
-                <div class="navbar-collapse collapse">							
-					<div class="menu">
-						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation">
-                                <div class="btn-group"> 
-                                    <a href="{{ url_for('.index') }}">
-                                        <button type="button" class="btn btn-primary">Home</button>
-                                    </a>
-                                </div>    
-                            </li>
-							<li role="presentation">
-                    		<div class="btn-group ">
-                    			{% if current_user.is_authenticated %}
-                        			<a href="{{ url_for('auth.logout', post_id=-1) }}">
-                        				<button type="button" class="btn btn-primary">SIGN OUT
-                        				</button>
-                        			</a>
-                    			{% else %}
-                        			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SigninModal"> SIGN IN
+	
+					
+				<ul class="nav navbar-nav" role="tablist">
+					<li role="presentation">
+                        <div class="btn-group"> 
+                            <a href="{{ url_for('.index') }}">
+                                    <button id="home-btn" type="button" class="btn">Home</button>
+                            </a>
+                        </div>    
+                    </li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right" role="tablist">
+					<li role="presentation">
+                    	<div class="btn-group ">
+                    		{% if current_user.is_authenticated %}
+                        		<a href="{{ url_for('auth.logout', post_id=-1) }}">
+                        			<button id="signout-btn" type="button" class="btn">SIGN OUT
                         			</button>
-                    			{% endif %}
-                    		</div>  
-                			</li>
-						</ul>
-					</div>
-				</div>		
+                        		</a>
+                    		{% else %}
+                        		<button id="signin-btn" type="button" class="btn" data-toggle="modal" data-target="#SigninModal"> SIGN IN
+                        		</button>
+                    		{% endif %}
+                    	</div>  
+                	</li>
+				</ul>		
             </div><!--/.container-->
         </nav><!--/nav-->		
     </header><!--/header-->	
@@ -83,17 +72,18 @@
 			<div class="header-img">			
               
 
-						<!--img src="{{ url_for('static', filename = 'tactification.jpg') }} " alt=""--> 
+			<!--img src="{{ url_for('static', filename = 'tactification.jpg') }} " alt=""--> 
 			<div class="carousel-caption">
 				<div class="container">
                 	<div class="row">
                     	<div class="col-md-10 col-md-offset-1">
-                            
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing</p>
-								
+                            <blockquote class="blockquote-reverse">
+                                <p>Ten players needed constantly to be aware of what the man with the ball was doing and anticipate what he would do next.</p>
+                                <p>Johan Cryuff</p>
+							</blockquote>	
 								<form class="form-inline">
 									<div class="form-group">
-										<button type="button" class="btn btn-primary" onclick="changeVideo('xX4mEhA0D_I')" >
+										<button id="inspire-btn" type="button" class="btn btn-primary" onclick="changeVideo('xX4mEhA0D_I')" >
 											<span class="glyphicon glyphicon-play-circle"></span>
                                             Inspired from
                                         </button>                                        
@@ -132,8 +122,13 @@
 	<hr>
     <div class="container-fluid">
         <div class="jumbotron">
-            <h1 style="color:black">Bootstrap Tutorial</h1>      
-            <p style="color:black"> Bootstrap is the most popular HTML, CSS, and JS framework for developing responsive, mobile-first projects on the web.</p>
+            <h1 style="color:black">Tactification...</h1>      
+            <p style="color:black"> is an attempt to discuss and learn football tactics. When I watch football, I always try to predict next pass based on players teammates in maximum space.
+                But never able to forecast what the pass the received player gonna pick.</p>
+
+            <p style="color:black">Here in tactification.com, I will post some interesting movements from games and listen to viewers for their predictions for the next moves and justification for their predictions.
+                Everyweek, will create a new post and the video of the play will be posted in tactification's youtube channel after one week.
+            </p>
         </div>
     </div>
 
@@ -143,11 +138,9 @@
                 <a href="{{ url_for('.post', id=now_running.id) }}">
                     <div class="left-text">
                         <h4>{{ now_running.header }}</h4>
-                        <p>{{ now_running.body }}</p>
+                        <p class="running-post">{{ now_running.body }}</p>
                     </div>
                     <div id="mainPost" class="right-image">
-                        <!--img src="{{ now_running.render_tactics_pic() }}" class="img-responsive" > 
-                        <p> {{ now_running.render_tactics_pic() }}</p> -->
                     </div>
                 </a>    
             </div>
@@ -165,12 +158,12 @@
                 <div class="row">
         {% endif %}    
 			        <div class="col-md-4">
-                        <a href="{{ url_for('.post', id=post.id) }}">
+                        <a id="post-{{post.id}}" href="{{ url_for('.post', id=post.id) }}">
                         <figure class="effect-marley">
                             <img class="img-responsive" src="{{ post.render_tactics_pic() }}" alt=""/>
-                            <figcaption>
+
                                 <h4>{{ post.header }}</h4>
-                            </figcaption>			
+			
                         </figure>
                         </a>
                     </div>
@@ -197,8 +190,8 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/js/output.min.js"></script>
+    <script type="text/javascript" src="../static/js/index.min.js"></script>
 
-</script>
+
 </body>
 </html>

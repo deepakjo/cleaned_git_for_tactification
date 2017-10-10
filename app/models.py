@@ -309,7 +309,7 @@ class Post(db.Model):
 
     def to_json(self):
         json_post = {
-            'url' : url_for('api.get_post', id=self.id, _external=True),
+            'url' : url_for('api.api_rt_get_post', id=self.id, _external=True),
             'header' : self.header,
             'body' : self.body,
             'timestamp' : self.timestamp,

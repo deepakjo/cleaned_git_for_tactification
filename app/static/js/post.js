@@ -141,7 +141,7 @@ function withUsercheck() {
     }
 }
 
-function fbs_click(post_url, post_header) {
+function tw_click(post_url, post_header) {
     console.log(post_url);
     console.log(post_header);
     var twtTitle = document.title;
@@ -156,5 +156,20 @@ function fbs_click(post_url, post_header) {
     }
     var twtLink = 'http://twitter.com/share?url=' + encodeURIComponent(twtUrl) + "&text=" + encodeURIComponent(dataText) +  "&hashtags=" + encodeURIComponent(dataHashtags) + "&via=" +encodeURIComponent(dataVia);
     window.open(twtLink);
+}
+
+function fb_click(post_url, post_header) {
+    console.log(post_url);
+    console.log(post_header);
+    console.log('Facebook');
+   
+    //var facebookShrLink = 'https://www.facebook.com/dialog/share?app_id=613455148848789&display=popup&href=' + encodeURIComponent(post_url) + '&redirect_uri=' + encodeURIComponent(post_url);
+    FB.ui({
+        method: 'share',
+        mobile_iframe: true,
+        href: post_url,
+      }, function(response){});
+
+    //window.open(facebookShrLink);
 }
 
