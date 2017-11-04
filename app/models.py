@@ -58,14 +58,6 @@ class Role(db.Model):
 
         db.session.commit()
 
-class Follow(db.Model):
-    __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -98,18 +90,6 @@ class User(db.Model, UserMixin):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic', cascade='all, delete-orphan')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
-
-    @password.setter
-    def password(self, password):
-        print password
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -159,55 +139,6 @@ class User(db.Model, UserMixin):
     def profile_pic_url(self, size=10, default='identicon', rating = 'g'):
         return photos.url(self.profile_pic)
 
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed
-        import forgery_py
-
-        seed()
-        for i in range(count):
-            filename = 'anonymous.jpeg'
-            file_url = photos.url(filename)
-            u = User(email=forgery_py.internet.email_address(),
-                     username=forgery_py.internet.user_name(True),
-                     password=forgery_py.lorem_ipsum.word(),
-                     confirmed=True,
-                     name=forgery_py.name.full_name(),
-                     location=forgery_py.address.city(),
-                     about_me=forgery_py.lorem_ipsum.sentence(),
-                     member_since=forgery_py.date.date(True),
-                     profile_pic = filename, profile_url = file_url)
-            db.session.add(u)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
-
-    def follow(self, user):
-        if not self.is_following(user):
-            f = Follow(follower=self, followed=user)
-            db.session.add(f)
-
-    def unfollow(self, user):
-        f = self.followed.filter_by(followed_id=user.id).first()
-        if f:
-            db.session.delete(f)
-
-    def is_following(self, user):
-        f = self.followed.filter_by(followed_id=user.id).first()
-        if f:
-            return True
-        else:
-            return False
-
-    def is_followed_by(self, user):
-        f = self.followers.filter_by(follower_id=user.id).first()
-        if f:
-            return True
-        else:
-            return False
-
     def generate_auth_token(self, expiration):
         s = Serializer(current_app.config['SECRET_KEY'], expires_in = expiration)
         return s.dumps({'id' : self.email})
@@ -223,14 +154,14 @@ class User(db.Model, UserMixin):
         return data['id']
     
     def to_json(self):
-        json_post = {'url': url_for('api.get_user', id=self.id, _external=True),
+        json_post = {'url': url_for('api.get_user_info', id=self.id, _external=True),
                      'username': self.username,
                      'member_since': self.member_since,
                      'last_seen': self.last_seen,
                      'followed_posts': url_for('api.get_post_comments', id=self.id, _external=True),
                      'post_count': self.posts.count()
                      }
-        
+
         return json_post
     
 class AnonymousUser(AnonymousUserMixin):
@@ -258,38 +189,8 @@ class Post(db.Model):
     tactic_pic = db.Column(db.String(64))
     tactic_url = db.Column(db.String(64))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
-
-    @staticmethod
-    def on_changed_body(target, value, oldvalue, initiator):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockqoute', 'code',
-                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-                        'h1', 'h2', 'h3', 'p']
-        target.body_html = bleach.linkify(bleach.clean(markdown(value,
-                                                                output_format='html'),
-                                                        tags=allowed_tags, strip=True))
-    
-    @staticmethod
-    def generate_fake(count=100):
-        from random import seed, randint
-        import forgery_py
-    
-        seed()
-        user_count = User.query.count()
-        for i in range(count):
-            u = User.query.offset(randint(0, user_count - 1)).first()
-            p = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                     timestamp=forgery_py.date.date(True), author=u)
-            db.session.add(p)
-            db.session.commit()
-
-    @staticmethod
-    def add_gifs_for_all_posts(gif, header):
-        for post in Post.query.all():
-            post.tactic_pic = gif
-            post.tactic_url = gifs.url(post.tactic_pic)
-            post.header = header
-            db.session.add(post)
-            db.session.commit()
+    ytVideoId = db.Column(db.String(32))
+    twTag = db.Column(db.String(32))
     
     def render_tactics_pic(self):
         return self.tactic_url
@@ -313,7 +214,7 @@ class Post(db.Model):
             'header' : self.header,
             'body' : self.body,
             'timestamp' : self.timestamp,
-            'author' : url_for('api.get_user', id=self.author_id, _external=True),
+            'author' : url_for('api.get_user_info', id=self.author_id, _external=True),
             'comments' : url_for('api.get_post_comments', id=self.id, _external=True),
             'comment_count': self.comments.count()
         }
@@ -331,7 +232,12 @@ class Post(db.Model):
         except KeyError:
             raise KeyError
             
-        return Post(body=body,  header=header, 
+        try:
+            twTag = json_post.get('twTag')    
+        except KeyError:
+            raise KeyError
+
+        return Post(body=body,  header=header, twTag=twTag,
                             tactic_pic=file_details[0],  tactic_url=file_details[1])
     
 db.event.listen(Post.body, 'set', Post.on_changed_body)
@@ -368,7 +274,6 @@ class Comment(db.Model):
             uname = self.anonymous_user_name
         else:
             profile_pic_url = self.author.profile_pic_url()
-            user_url = url_for('.user', username=self.author.username)
             uname = self.author.username
 
         json_post = {
@@ -378,7 +283,6 @@ class Comment(db.Model):
             'ts' : self.timestamp,
             'is_anon' : self.by_anonymous,
             'pfl_pic' : profile_pic_url,
-            'url_for_u' : user_url,
             'uname' : uname, 
             'ts' : self.timestamp.utcnow()
         }

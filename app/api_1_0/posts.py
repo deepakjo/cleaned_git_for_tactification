@@ -6,16 +6,6 @@ from ..models import Post, Permission, User, Comment
 from decorators import permission_required
 from .. import db,  gifs
 from ..utils import get_post, get_comment_fields_in_json,  add_comment_to_db
-
-@api_rt.route('/posts_temp', methods=['POST'])
-@permission_required(Permission.WRITE_ARTICLES)
-def new_post_temp():
-    print 'args',  request.view_args
-    post = Post.from_json(request.get_json(force=True))
-    post.author = g.current_user
-    db.session.add(post)
-    db.session.commit()
-    return jsonify(post.to_json())
     
 @api_rt.route('/new_post', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
@@ -32,23 +22,24 @@ def new_post():
         raise ValidationError('File is a must for POST')
         return jsonify('Error')
         
-
     post = Post.from_json(request.form,  file_details)
     post.author = g.current_user
+    post.author_id = g.current_user.id
+    print 'author.id', g.current_user.id
     db.session.add(post)
     db.session.commit()
     return jsonify(post.to_json()), 201, \
 	       {'Location': url_for('api.api_rt_get_post', id=post.id, _external=True)}
 
 
-@api_rt.route('/posts/<int:id>', methods=['POST'])
+@api_rt.route('/edit_post/<int:id>', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
 def edit_post(id):
     """
     :type id: int
     """
     post = Post.query.get_or_404(id)
-    
+    print 'edit_post', id
     try: 
         body = request.form['body']       
     except KeyError:
@@ -58,26 +49,55 @@ def edit_post(id):
         header = request.form['header']
     except KeyError:
         raise KeyError
-            
+
+    try:
+        hashTag = json_post.get('twTag')    
+    except KeyError:
+        raise KeyError
+
+    if 'tactical_gif' in request.files:
+        print request.files['tactical_gif']
+        filename = gifs.save(request.files['tactical_gif'])
+        file_url = gifs.url(filename)
+        file_details = (filename,  file_url)
+        print "file_url=%s file_details=%s" %(file_url,  file_details)
+
     post.body = body
     post.header = header
+    post.twTag = hashTag
+    post.author = g.current_user
+    post.tactic_pic = file_details[0]
+    post.tactic_url = file_details[1]
+    post.author_id = g.current_user.id
+    print 'author.id', g.current_user.id    
     db.session.add(post)
-    return jsonify(post.to_json())
+    db.session.commit()
+    return jsonify(post.to_json()), 201, \
+	       {'Location': url_for('api.api_rt_get_post', id=post.id, _external=True)}
 
-@api_rt.route('/posts/<int:id>', methods=['POST'])
+@api_rt.route('/delete_post/<int:id>', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
 def delete_post(id):
     """
     :type id: int
     """
+    print 'postid:', id
     post = Post.query.get_or_404(id)
                  
     db.session.delete(post)
-    return jsonify(post.to_json())
+    db.session.commit()
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return jsonify({"count": len(posts)})
 
-""" API to add comment through RESTful Calls 
+@api_rt.route('/number_of_posts', methods=['POST'])
+@permission_required(Permission.WRITE_ARTICLES)
+def number_of_posts():
+    """ API to add comment through RESTful Calls 
      inputs: post id
      """
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return jsonify({"count": len(posts)})
+
 @api_rt.route('/post_comment/<int:id>', methods=['PUT'])
 @permission_required(Permission.COMMENT)
 def api_rt_post_comment(id):
@@ -106,6 +126,22 @@ def api_rt_post_comment(id):
     comment_obj = add_comment_to_db(comment_in_json)
     return  jsonify(comment_obj.to_json(),  {'Location': url_for('api.api_rt_get_post', id=comment_obj.post_id, _external=True)})
     
+@api_rt.route('/add_video/<int:id>', methods=['PUT'])
+@permission_required(Permission.WRITE_ARTICLES)    
+def api_rt_update_yt_Video(id):
+    post = get_post(id)
+
+    args = request.get_json(force=True)
+    try:
+        videoId = args['videoId']
+    except KeyError:
+        raise KeyError
+
+    post.ytVideoId = videoId
+    db.session.commit()
+    return jsonify(post.to_json()), 201, \
+	       {'Location': url_for('api.api_rt_get_post', id=post.id, _external=True)}      
+
 @api_rt.route('/posts_view')
 def get_posts():
 	print 'post', g.current_user
@@ -138,13 +174,13 @@ def api_rt_get_post(id):
 	return jsonify(post.to_json())
 
 @api_rt.route('/user/<int:id>')
-def get_user(id):
+def get_user_info(id):
 	print 'get_user'
 	user = User.query.get_or_404(id)
 	return jsonify(user.to_json())
 
 @api_rt.route('/comments/<int:id>')
 def get_post_comments(id):
-	print 'get_port_comments'
+	print 'get_post_comments'
 	comment = Comment.query.get_or_404(id)
 	return jsonify(comment.to_json())

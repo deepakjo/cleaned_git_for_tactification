@@ -40,6 +40,25 @@ class FlaskClientTestCase(unittest.TestCase):
      
         print cmd
         output = commands.getstatusoutput(cmd)
+        print 'add_post result', output
+
+    def tactification_edit_post(self, post_id, body, header, img_path):
+        token = self.tactification_get_admin_token()
+        cmd = "http --auth " + token + ":  --form POST http://127.0.0.1:5000/api_rt/v1.0/edit_post/" + str(post_id) + " body='" + str(body)  + "' header='" + str(header) + "' " + str(img_path)
+     
+        print cmd
+        output = commands.getstatusoutput(cmd)
+        print 'Edit result', output
+
+    def tactification_delete_post(self, post_id):
+        token = self.tactification_get_admin_token()
+        cmd = "http --auth " + token + ":  --form POST http://127.0.0.1:5000/api_rt/v1.0/delete_post/" + str(post_id) 
+        print cmd
+        output = commands.getstatusoutput(cmd)
+        print output[1]
+        number_of_posts = json.loads(output[1])
+        print number_of_posts["count"]
+        return number_of_posts["count"]
 
     @classmethod
     def setUpClass(cls):
@@ -122,6 +141,9 @@ class FlaskClientTestCase(unittest.TestCase):
         else:
             return None
 
+        print driver.get_window_size()
+        # set window size
+        driver.set_window_size(480, 320)
         driver.get(url_name)
         print driver.title
         return driver
@@ -492,22 +514,33 @@ class FlaskClientTestCase(unittest.TestCase):
 
         sleep(5)
 
-    def test_tactification(self):
-        for post in range(1, 2):
+    def add_posts(self, no_of_posts):
+        for post in range(1, no_of_posts):
             body = paragraphs() 
             header = sentences() 
             img_path = "tactical_gif@/home/deepak/Pictures/tactification/" + str(post) + ".png"
             self.tactification_add_post(body, header, img_path)
 
-        sleep(5)
+    def edit_posts(self, post_id):
+        body = paragraphs() 
+        header = sentences() 
+        img_path = "tactical_gif@/home/deepak/Pictures/tactification/" + str(post_id) + ".png"
+        self.tactification_edit_post(post_id, body, header, img_path)
+        return header
+
+    def test_tactification(self):
+
+        no_of_posts = 25
+        self.add_posts(no_of_posts)
+        sleep(2)
 
         # navigate to home page
         self.driver.get('http://127.0.0.1:5000/')
-        count = 2
-        no_of_posts = 2
+        count = 1
+        
         sleep(2)
 
-        for case in range(12,35):
+        for case in range(12,38):
             print 'CASE:', case
             if (case == 1):
                 print "This case is to enter into main post with fb and add comments"
@@ -720,7 +753,6 @@ class FlaskClientTestCase(unittest.TestCase):
                 self.postCommentWithSignIn(self.driver, 1)
                 self.logout(self.driver)
             elif (case == 31):
-                self.driver.back()
                 self.post_now_running(self.driver)
                 self.postCommentWithOutSignIn(self.driver, 1)
             elif (case == 32):
@@ -750,3 +782,19 @@ class FlaskClientTestCase(unittest.TestCase):
                 self.driver.get(post_url)
                 sleep(2)
                 self.goToTwShrBtn(self.driver)
+            elif (case == 36):
+                print 'Editing posts'
+                post_number = sample(range(1, no_of_posts), 1)
+                header = self.edit_posts(post_number[0])
+                post_url = "http://127.0.0.1:5000/post/" + str(post_number[0])
+                self.driver.get(post_url)  
+                sleep(10)
+                if (self.check_exists_by_id(self.driver, "post-hdr-id") == True):
+                    elemId = self.driver.find_element_by_id("post-hdr-id")
+                    print 'Elem text',elemId.text
+                    assert(elemId.text == header)           
+            elif (case == 37):
+                print 'Deleting Posts'
+                post_number = sample(range(1, no_of_posts), 1)
+                current_no_of_posts = self.tactification_delete_post(post_number[0])
+                assert(no_of_posts-2 ==current_no_of_posts)

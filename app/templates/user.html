@@ -1,124 +1,93 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Flasky{% endblock %}
+<head>
 
-{% block page_content %}
+    <title>Tactificaton Post</title>
+	
+	<link href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet">
+
+</head>
+	
+<body>
 <div class="page-header">
     <img class="img-rounded profile-thumbnail" src="{{ user.profile_pic_url(size=40) }}" width="100" height="100">
-    <table style="width:100%">
-	<tr>
-	    <th>Field</th>
-	    <th>Values</th>
+    <table class="table-user" style="width:100%">
+	<tr class="tr-user">
+	    <th class="th-user">Field</th>
+	    <th class="th-user">Values</th>
 	</tr>
-	<tr>
-		<th>id<th>
-		<th>{{ user.id }}<th>
+	<tr class="tr-user">
+		<th class="th-user">id</th>
+		<th class="th-user">{{ user.id }}</th>
 	</tr>	
-	<tr>
-		<th>email<th>
-		<th>{{ user.email }}<th>
+	<tr class="tr-user">
+		<th class="th-user">email</th>
+		<th class="th-user">{{ user.email }}</th>
 	</tr>	
-	<tr>
-		<th>username<th>
-		<th>{{ user.username }}<th>
+	<tr class="tr-user">
+		<th class="th-user">username</th>
+		<th class="th-user">{{ user.username }}</th>
 	</tr>	
-	<tr>
-		<th>role_id<th>
-		<th>{{ user.role_id }}<th>
+	<tr class="tr-user">
+		<th class="th-user">role_id</th>
+		<th class="th-user">{{ user.role_id }}</th>
 	</tr>	
-	<tr>
-		<th>is_active<th>
-		<th>{{ user.is_active }}<th>
+	<tr class="tr-user">
+		<th class="th-user">is_active</th>
+		<th class="th-user">{{ user.is_active }}</th>
 	</tr>
-	<tr>
-		<th>is_via_oauth<th>
-		<th>{{ user.via_oauth }}<th>
+	<tr class="tr-user">
+		<th class="th-user">is_via_oauth</th>
+		<th class="th-user">{{ user.via_oauth }}</th>
 	</tr>
-	<tr>
-		<th>name<th>
-		<th>{{ user.name }}<th>
+	<tr class="tr-user">
+		<th class="th-user">name</th>
+		<th class="th-user">{{ user.name }}</th>
 	</tr>	
-	<tr>
-		<th>country<th>
-		<th>{{ user.country }}<th>
+	<tr class="tr-user">
+		<th class="th-user">country</th>
+		<th class="th-user">{{ user.country }}</th>
 	</tr>	
-	<tr>
-		<th>location<th>
-		<th>{{ user.location }}<th>
+	<tr class="tr-user">
+		<th class="th-user">location</th>
+		<th class="th-user">{{ user.location }}</th>
 	</tr>	
-	<tr>
-		<th>member since<th>
-		<th>{{ user.member_since }}<th>
+	<tr class="tr-user">
+		<th class="th-user">member since</th>
+		<th class="th-user">{{ user.member_since }}</th>
 	</tr>	
-	<tr>
-		<th>last seen<th>
-		<th>{{ user.last_seen }}<th>
+	<tr class="tr-user">
+		<th class="th-user">last seen</th>
+		<th class="th-user">{{ user.last_seen }}</th>
 	</tr>	
-	<tr>
-		<th>confirmed<th>
-		<th>{{ user.confirmed }}<th>
+	<tr class="tr-user">
+		<th class="th-user">confirmed</th>
+		<th class="th-user">{{ user.confirmed }}</th>
 	</tr>
-	<tr>
-		<th>profile_pic</th>
-		<th>{{ user.profile_pic }}</th>
+	<tr class="tr-user">
+		<th class="th-user">profile_pic</th>
+		<th class="th-user">{{ user.profile_pic }}</th>
 	</tr>
-	<tr>
-		<th>profile_url</th>
-		<th>{{ user.profile_url }}</th>
+	<tr class="tr-user">
+		<th class="th-user">profile_url</th>
+		<th class="th-user">{{ user.profile_url }}</th>
 	</tr>
-	<tr>
-		<th>About Me<th>
-		<th>{{ user.about_me }}<th>
+	<tr class="tr-user">
+		<th class="th-user">About Me</th>
+		<th class="th-user">{{ user.about_me }}</th>
 	</tr>
-    <tr>
-        <th>Role permission</th>
-        <th>{{ user.role.permissions }}</th>
-    </tr>
-
-    {% if user.name or user.location %}
-    <p>
-        {% if user.name %}{{ user.name }}{% endif %}
-        {% if user.location %}
-            From <a href="http://maps.google.com/?q={{ user.location }}">
-                {{ user.location }}
-            </a>
-        {% endif %}
-    </p>
-    {% endif %}
-
-    {% if current_user.is_administrator() %}
-    <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-    {% endif %}
-    {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-	{% if user == current_user %}
-	<a class="btn btn-default" href="{{ url_for('auth.edit_profile') }}">
-		Edit Profile
-	</a>
-	{% endif %}
-    <p>
-        Member since {{ moment(user.member_since).format('L') }}
-        Last seen {{ moment(user.last_seen).fromNow() }}.
-    </p>
-
-    {% if current_user.can(Permission.FOLLOW) and user != current_user %}
-        {% if not current_user.is_following(user) %}
-        <a href="{{ url_for('.follow', username=user.username) }}"
-            class="btn btn-primary">Follow</a>
-        {% else %}
-        <a href="{{ url_for('.unfollow', username=user.username) }}"
-            class="btn btn-primary">Follow</a>
-        {% endif %}
-    {% endif %}
-    <a href="{{ url_for('.followers', username=user.username) }}">
-        Followers: <span class="badge">{{ user.followers.count() }}</span>
-    </a>
-
-    <a href="{{ url_for('.followed_by', username=user.username) }}">
-        Following: <span class="badge">{{ user.followed.count() }}</span>
-    </a>
-    {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
-    | <span class="label label-default">Follows you</span>
-    {% endif %}
-
+    <tr class="tr-user">
+        <th class="th-user">Role permission</th>
+        <th class="th-user">{{ user.role.permissions }}</th>
+	</tr>
+	</table>
 </div>
-{% endblock %}
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>

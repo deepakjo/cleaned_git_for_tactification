@@ -8,6 +8,16 @@ from .. import db
 from flask_login import login_user
 from .. import photos
 
+def prepend_provider_in_uid(provider, user_id):
+    if (provider == 'facebook'):
+        user_id = user_id + 'fb'
+    elif (provider == 'twitter')
+        user_id = user_id + 'tw'
+
+    print 'provider', provider
+    print 'user_id', user_id
+    return user_id
+
 @oauth_rt.route('/callback/<provider>')
 def oauth_callback(provider):
     if not current_user.is_anonymous:
@@ -24,6 +34,7 @@ def oauth_callback(provider):
         urlretrieve(pic_url, current_app.config['UPLOADED_PHOTOS_DEST'] + '/' + user_id )
         filename = user_id
         file_url = photos.url(filename)
+        user_id = prepend_provider_in_uid(provider, user_id)
         print 'filename=%s and file_url=%s' %(filename, file_url)
         user = User(email=user_id, username=username, profile_pic = filename,
                     profile_url = file_url, confirmed = True, via_oauth = True)

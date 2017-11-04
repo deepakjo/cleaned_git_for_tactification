@@ -1,4 +1,4 @@
-7<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,12 +11,15 @@
 
     <!-- facebook meta fields-->
     <meta property="og:url" content="{{ url_for('main.post', id=post.id, _external=True) }}" />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ post.header }}"/>
-    <meta property="og:description" content="{{ post.bofy }}"/>
-    <meta property="og:image" content="{{ post.render_tactics_pic() }}" />
+    <meta property="og:description" content="{{ post.body }}"/>
+    <meta property="og:image" content="{{ post.render_tactics_pic() }}"/>
+    <meta property="og:image:height" content="720"/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:locale" content="en_US"/>
 
-    <title>Tactificaton Post</title>
+
 
     <link href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet">
@@ -36,64 +39,46 @@
     var post_url = "{{  url_for('main.post', id=post.id, _external=True) }}";
     var post_hdr = "{{ post.header }}";
     var post_id = "{{ post.id }}";
+    var post_tag = "{{ post.twTag }}";
+    var post_time = "{{ post.timestamp }}";
     var submit_url = "{{  url_for('main.submit_comment') }}";
     var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     var post_pic_url = "{{ post.render_tactics_pic() }}";
-    console.log($SCRIPT_ROOT);
 </script>   
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-    <script>  window.fbAsyncInit = function() {
-    FB.init({
-      appId            : '613455148848789',
-      autoLogAppEvents : true,
-      xfbml            : true,
-      version          : 'v2.10'
-    });
-    FB.AppEvents.logPageView();
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-   </script>
 
 <header id="header">
-        <nav class="navbar navbar-default navbar-fixed-top" role="banner">
-            <div class="container">
-	
-					
-				<ul class="nav navbar-nav" role="tablist">
-					<li role="presentation">
-                        <div class="btn-group"> 
-                            <a href="{{ url_for('.index') }}">
-                                    <button id="home-btn" type="button" class="btn">Home</button>
-                            </a>
-                        </div>    
+        <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                  <div class="navbar-header">
+                    <a id="site-btn" class="navbar-brand" href="{{ url_for('.index') }}">
+                        <h4 class="nav-css">Tactification.com</h4>
+                    </a>                      
+                  </div>
+                  <ul class="nav navbar-nav">
+                    <li id="home-btn" class="active">
+                        <a href="{{ url_for('.index') }}">
+                            <h4 class="nav-css">Home</h4>
+                        </a>
                     </li>
-                </ul>
-                
-                <ul class="nav navbar-nav navbar-right" role="tablist">
-					<li role="presentation">
-                    	<div class="btn-group ">
-                    		{% if current_user.is_authenticated %}
-                        		<a href="{{ url_for('auth.logout', post_id=post.id) }}">
-                        			<button id="signout-btn" type="button" class="btn">SIGN OUT
-                        			</button>
-                        		</a>
-                    		{% else %}
-                        		<button id="signin-btn" type="button" class="btn" data-toggle="modal" data-target="#SigninModal"> SIGN IN
-                        		</button>
-                    		{% endif %}
-                    	</div>  
-                	</li>
-				</ul>		
-            </div><!--/.container-->
-        </nav><!--/nav-->		
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                    {% if current_user.is_authenticated %}
+                        <a id="signout-btn" href="{{ url_for('auth.logout', post_id=-1) }}">
+                            <h4 class="nav-css">Sign Out</h4></a>
+                        </a>
+                    {% else %}
+                        <a id="signin-btn" data-toggle="modal" data-target="#SigninModal" href="#"> 
+                            <h4 class="nav-css">Sign In</h4>
+                        </a>
+                    {% endif %}     
+                    </li>                     
+                  </ul>
+                </div>
+              </nav> 
+
     </header><!--/header-->	
 
     {% include "post_signin.html" %}
@@ -111,16 +96,19 @@
         </div>
         <!-- Portfolio Item Heading -->
         <div class="row">
-            <div class="col-md-8 col-xs-12">
-                <h1 class="post-header" >{{ post.header }}
+            <div class="col-xs-8">
+                <h1 id="post-hdr-id" class="post-header" >{{ post.header }}
                 </h1>
+            </div>
+            <div class="col-xs-4>">
+                <button type="button" id="dateId" class="btn btn-default date-css"></p>
             </div>
         </div>
         <!-- /.row -->
 
         <!-- Portfolio Item Row -->
         <div class="row">
-            <div class="col-md-8 col-xs-12">
+            <div class="col-md-10 col-xs-12">
                 <div>
                     <img id="postPic" class="img-responsive" alt="">
                 </div>
@@ -132,14 +120,17 @@
         <br>
 
         <div class="row">
-            <div class="col-md-7 col-xs-6 col-xs-offset-6 col-md-offset-5">
-                <ul class="share">                    
-                    <li><button id="fb-shareBtn" type="button" onclick="fb_click(post_url, post_hdr)"><i class="fa fa-facebook img-circle"></i></button></li>
-                    <li><button id="tw-shareBtn" type="button" onclick="tw_click(post_url, post_hdr)"><i class="fa fa-twitter"></i></button></li>                    
-                    <li><i class="fa fa-comments" title="comments">{{ no_of_comments }}</i></li>                
+            <div class="col-md-6 col-xs-6 col-xs-offset-6 col-md-offset-6">
+                <ul class="share">       
+                    <li><button id="yt-shareBtn" class="yt-button" type="button" onclick="yt_click(post_id)"></button></li>             
+                    <li><button id="fb-shareBtn" class="fb-button" type="button" onclick="fb_click(post_url, post_hdr, post_pic_url)"></button></li>
+                    <li><button id="tw-shareBtn" class="tw-button" type="button" onclick="tw_click(twttr, post_url, post_hdr, post_tag)"></button></li>
+                    <li><i id="tc-comments" class="fa fa-comments" title="comments">{{ no_of_comments }}</i></li>                
                 </ul>    
             </div>
         </div>
+
+        <!--a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Football is my religion" data-via="deepakpjose" data-hashtags="football" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script-->
 
         <div class="row">
             <div class="col-md-8 col-xs-12">
@@ -152,7 +143,6 @@
 
         <hr>
 
-        {% import "bootstrap/wtf.html" as wtf %}
         {% import "_macros.html" as macros %}
 
         <!-- row for comments-->
@@ -182,8 +172,10 @@
             <div id="div1"></div>
 
             {% if pagination %}
-                <div class="pagination">
-                    {{ macros.pagination_widget(pagination, '.post', fragment='#comments', id=post.id) }}
+                <div class="text-center">
+                    <div class="pagination">
+                        {{ macros.pagination_widget(pagination, '.post', fragment='#comments', id=post.id) }}
+                    </div>
                 </div>
             {% endif %}
         </div>
@@ -214,7 +206,23 @@
                     
     <!-- Footer -->
     {% include "footer_file.html" %}
-    
+        <!-- Modal -->
+        <div class="modal" id="myModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><span class="label label-primary">VIDEO</span></h4>
+                    </div>      
+                    <div class="modal-body">          
+                      <iframe id="iframeYoutube" width="560" height="315"></iframe>             
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -226,6 +234,22 @@
     <scrint type="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
     <script type="text/javascript" src="../static/js/post.min.js"></script>
+    <script>window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+          t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      
+        t._e = [];
+        t.ready = function(f) {
+          t._e.push(f);
+        };
+      
+        return t;
+      }(document, "script", "twitter-wjs"));</script>    
 
 
 </body>

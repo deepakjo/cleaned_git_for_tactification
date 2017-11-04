@@ -34,70 +34,60 @@
     {% import "_macros.html" as macros %}
 
 	<header id="header">
-        <nav class="navbar navbar-default navbar-fixed-top" role="banner">
-            <div class="container">
-	
-					
-				<ul class="nav navbar-nav" role="tablist">
-					<li role="presentation">
-                        <div class="btn-group"> 
+            <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                      <div class="navbar-header">
+                        <a id="site-btn" class="navbar-brand" href="{{ url_for('.index') }}">
+                            <h4 class="nav-css">Tactification.com</h4>
+                        </a>                      
+                      </div>
+                      <ul class="nav navbar-nav">
+                        <li id="home-btn" class="active">
                             <a href="{{ url_for('.index') }}">
-                                    <button id="home-btn" type="button" class="btn">Home</button>
+                                <h4 class="nav-css">Home</h4>
                             </a>
-                        </div>    
-                    </li>
-                </ul>
-                
-                <ul class="nav navbar-nav navbar-right" role="tablist">
-					<li role="presentation">
-                    	<div class="btn-group ">
-                    		{% if current_user.is_authenticated %}
-                        		<a href="{{ url_for('auth.logout', post_id=-1) }}">
-                        			<button id="signout-btn" type="button" class="btn">SIGN OUT
-                        			</button>
-                        		</a>
-                    		{% else %}
-                        		<button id="signin-btn" type="button" class="btn" data-toggle="modal" data-target="#SigninModal"> SIGN IN
-                        		</button>
-                    		{% endif %}
-                    	</div>  
-                	</li>
-				</ul>		
-            </div><!--/.container-->
-        </nav><!--/nav-->		
+                        </li>
+                      </ul>
+                      <ul class="nav navbar-nav navbar-right">
+                        <li>
+                        {% if current_user.is_authenticated %}
+                            <a id="signout-btn" href="{{ url_for('auth.logout', post_id=-1) }}">
+                                <h4 class="nav-css">Sign Out</h4></a>
+                            </a>
+                        {% else %}
+                            <a id="signin-btn" data-toggle="modal" data-target="#SigninModal" href="#"> 
+                                <h4 class="nav-css">Sign In</h4>
+                            </a>
+                        {% endif %}     
+                        </li>                     
+                      </ul>
+                    </div>
+                  </nav> 
     </header><!--/header-->	
 
-    <div class="wallpaper">
-        <div class="container">
-			<div class="header-img">			
-              
-
-			<!--img src="{{ url_for('static', filename = 'tactification.jpg') }} " alt=""--> 
-			<div class="carousel-caption">
-				<div class="container">
-                	<div class="row">
-                    	<div class="col-md-10 col-md-offset-1">
-                            <blockquote class="blockquote-reverse">
-                                <p>Ten players needed constantly to be aware of what the man with the ball was doing and anticipate what he would do next.</p>
-                                <p>Johan Cryuff</p>
-							</blockquote>	
-								<form class="form-inline">
-									<div class="form-group">
-										<button id="inspire-btn" type="button" class="btn btn-primary" onclick="changeVideo('xX4mEhA0D_I')" >
-											<span class="glyphicon glyphicon-play-circle"></span>
-                                            Inspired from
-                                        </button>                                        
-									</div>
-								</form>
-							</div>
-				    	</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>            
 
     <br>
+    <br>      
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="jumbotron jumbotron-color">
+            <blockquote class="blockquote">
+                <p class=" blockqt-color">Ten players needed constantly to be aware of what the man with the ball was doing and ANTINCIPATE what he would do next.</p>
+                <footer class="blockqt-color">Johan Cryuff</footer>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <button id="inspire-btn" type="button" class="btn-primary" onclick="changeVideo('xX4mEhA0D_I')" >
+                                <span class="glyphicon glyphicon-play-circle"></span>
+                                Inspired from
+                            </button>                                        
+                        </div>
+                    </form>                
+            </blockquote>
+        </div>
+    </div>
+
     <br>
 
     <!-- Modal -->
@@ -134,19 +124,26 @@
 
     {% if now_running %}
         <section class="action">
+            <a href="{{ url_for('.post', id=now_running.id) }}">
             <div class="container">
-                <a href="{{ url_for('.post', id=now_running.id) }}">
-                    <div class="left-text">
-                        <h4>{{ now_running.header }}</h4>
-                        <p class="running-post">{{ now_running.body }}</p>
+                <div class="row">
+                <div class="col-md-6">
+                    <h4>{{ now_running.header }}</h4>
+                    <p class="running-post">{{ now_running.body }}</p> 
+                </div>
+                    <div id="mainPost" class="right-image col-md-6">
                     </div>
-                    <div id="mainPost" class="right-image">
-                    </div>
-                </a>    
+                </div>
             </div>
+            </a>
         </section>
+    
+
     {% endif %}
-	
+
+    <br>
+    <br>
+
 	<div class="gallery">
 		<div class="text-center">
 			<h2>Previous Posts</h2>
@@ -182,8 +179,10 @@
             </div>
         </div>
     {% endif %}
+    </div>
+    </div>
 
-	{% include "footer_file.html" %}
+{% include "footer_file.html" %}
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -191,6 +190,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/index.min.js"></script>
+    <script type="text/javascript" src="../static/js/video.min.js"></script>
 
 
 </body>

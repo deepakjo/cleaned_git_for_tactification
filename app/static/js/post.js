@@ -53,9 +53,16 @@ $(function() {
     $('#submitWithName').click(function() {
         var uname = $('input[name="uname"]').val();
         var comment = $('textarea[name="comment"]').val();
+        var no_of_comments;
+
+        console.log("New");
+        if (uname == '' || comment == '') {
+            alert("Name and Comment should not be empty");
+            return;
+        }
 
         console.log(uname);
-        console.log("Comment14");
+        console.log("Comment15");
         $.ajax({
             url: $SCRIPT_ROOT + "/submit_comment",
             data: JSON.stringify({ name: uname, comment: comment, post_id: post_id }),
@@ -69,6 +76,9 @@ $(function() {
             addElement(data);
             $('#textIdwithOutUser').val('');
             $('#inputId').val('');
+            no_of_comments = $('#tc-comments').text();
+            no_of_comments = Number(no_of_comments) + 1;
+            $('#tc-comments').text(no_of_comments);
         }).fail(function(data, status) {
             console.log(status);
             console.log(JSON.stringify(data));
@@ -79,9 +89,15 @@ $(function() {
 $(function() { 
     $('#submitWithOutName').click(function() {
         var comment = $('textarea[name="comment"]').val();
+        var no_of_comments;
 
+        console.log("New17");
+        if (comment == '') {
+            alert("Name and Comment should not be empty");
+            return;
+        }        
         console.log(comment);
-        console.log("Comment14");
+        console.log("Comment17");
         $.ajax({
             url: $SCRIPT_ROOT + "/submit_comment",
             data: JSON.stringify({ comment: comment, post_id: post_id }),
@@ -94,6 +110,10 @@ $(function() {
             console.log(JSON.stringify(data));            
             addElement(data);
             $('#textIdwithUser').val('');
+            no_of_comments = $('#tc-comments').text();
+            console.log(no_of_comments);
+            no_of_comments = Number(no_of_comments) + 1;
+            $('#tc-comments').text(no_of_comments);                        
         }).fail(function(data, status) {
             console.log(status);
             console.log(JSON.stringify(data));
@@ -101,12 +121,12 @@ $(function() {
     });
 });
 
-$(function() {
+$(document).ready(function(){
     console.log("postPic");
     $("#postPic").attr("src", post_pic_url);
-    $('#postPic').width(1000);
+    $('#postPic').width(1200);
     $('#postPic').height(550);
-});
+})
 
 $(function() {
     console.log("postPic");
@@ -141,35 +161,105 @@ function withUsercheck() {
     }
 }
 
-function tw_click(post_url, post_header) {
-    console.log(post_url);
+function tw_click(twttr, post_url, post_header, post_tag) {
+    console.log("HELLO twttr2");
     console.log(post_header);
     var twtTitle = document.title;
     var twtUrl = post_url;
     var dataSize = "large";
     var dataText=post_header;
-    var dataHashtags = "football, football_tactics";
-    var dataVia = "footynotes1"
+    var dataHashtags = "football, football_tactics," + post_tag;
+    var dataVia = "tactification1"
     var maxLength = 140 - (twtUrl.length + 1);
     if (twtTitle.length > maxLength) {
         twtTitle = twtTitle.substr(0, (maxLength - 3)) + '...';
     }
+
+    
     var twtLink = 'http://twitter.com/share?url=' + encodeURIComponent(twtUrl) + "&text=" + encodeURIComponent(dataText) +  "&hashtags=" + encodeURIComponent(dataHashtags) + "&via=" +encodeURIComponent(dataVia);
-    window.open(twtLink);
+    window.open(twtLink, "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=500,width=700,height=400");
+    //<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    //<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Football is my religion" data-via="deepakpjose" data-hashtags="football" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script-->
 }
 
-function fb_click(post_url, post_header) {
+function fb_click(post_url, post_header, post_pic_url) {
     console.log(post_url);
     console.log(post_header);
-    console.log('Facebook');
+    console.log(post_pic_url);
    
     //var facebookShrLink = 'https://www.facebook.com/dialog/share?app_id=613455148848789&display=popup&href=' + encodeURIComponent(post_url) + '&redirect_uri=' + encodeURIComponent(post_url);
     FB.ui({
         method: 'share',
         mobile_iframe: true,
-        href: post_url,
+        href: "http://www.tactification.com/post/8",
+        quote: post_header
       }, function(response){});
 
     //window.open(facebookShrLink);
 }
 
+$(document).ready(function(){
+    $("#myModal").on("shown.bs.modal",function(){
+       $('#myModal').removeClass('in');
+    })
+  })
+
+function changeVideo(vId){
+    var iframe=document.getElementById("iframeYoutube");
+    iframe.src="https://www.youtube.com/embed/"+vId+"?html5=1";
+    $("#myModal").modal("show");
+}
+
+function yt_click(post_id){
+    console.log("Comment17");
+    $.ajax({
+        url: $SCRIPT_ROOT + "/play_video",
+        data: JSON.stringify({ post_id: post_id }),
+        method: "POST",
+        datatype: 'json',
+        contentType: "application/json; charset=utf-8"
+    })
+    .done(function(data, status ) {
+        console.log('Where');
+        console.log(JSON.stringify(data));
+        if (data['result'] == 'pass')
+            if (data['display'] == true)
+                changeVideo(data['video_id']);
+            else
+                alert('Video will be uploaded on ' + data['date']);                            
+    }).fail(function(data, status) {
+        console.log(status);
+        console.log(JSON.stringify(data));
+    });
+}
+
+function test_field(is_authenticated) {
+    console.log("test_field");
+    if (is_authenticated == true) {
+        if(document.getElementById("textIdwithUser").value == '') {
+            alert("No comments");
+        }        
+    } else {
+        if ((document.getElementById("inputId").value == '') ||
+            (document.getElementById("textIdwithOutUser").value == '')) {
+            alert("Name and Comment should not be empty");
+        }
+    }
+}
+
+$(document).ready(function(){
+    var d = moment(post_time).format("MMM Do YY");
+    document.getElementById("dateId").innerHTML = d;
+}); 
+
+$(document).ready(function() {
+    $.ajaxSetup({ cache: true });
+    $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+      FB.init({
+        appId: '613455148848789',
+        version: 'v2.7' // or v2.1, v2.2, v2.3, ...
+      });     
+      $('#loginbutton,#feedbutton').removeAttr('disabled');
+      FB.getLoginStatus(updateStatusCallback);
+    });
+});

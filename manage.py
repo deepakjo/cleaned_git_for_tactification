@@ -8,7 +8,6 @@ from app import create_app, db
 from app.models import User, Role, Post, Comment
 from flask_script import Manager, Shell, Server
 from flask_migrate import Migrate, MigrateCommand
-from flask_mail import Mail
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'development')
 manager = Manager(app)
@@ -19,15 +18,6 @@ if os.environ.get('FLASK_COVERAGE'):
     import coverage
     COV = coverage.coverage(branch=True, include='app/*')
     COV.start()
-
-#def get_resource_as_string(name, charset='utf-8'):
-#    with app.open_resource(name) as f:
-#        return f.read().decode(charset)
-
-#app.jinja_env.globals['get_resource_as_string'] = get_resource_as_string
-
-#pg70 Creating Mail account.
-mail = Mail(app)
 
 def make_shell_context():
     """
@@ -70,5 +60,7 @@ def delete():
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command("db", MigrateCommand)
 
-if __name__ == "__main__":
+if os.environ.get('running_local'):
+    print 'here'
+    if __name__ == "__main__":
         manager.run()
