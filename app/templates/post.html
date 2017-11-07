@@ -192,7 +192,10 @@
             {% for rand_post in rand_posts %}
                 <div class="col-sm-3 col-xs-6">
                     <a href="{{ url_for('main.post', id= rand_post.id) }}">
-                        <img class="img-responsive portfolio-item" src="{{ rand_post.tactic_url }}" alt=""/>
+                        <figure class="effect-marley">
+                            <img class="img-responsive portfolio-item" src="{{ rand_post.tactic_url }}" alt=""/>
+                            <h4> {{ rand_post.header }}</h4>
+                        </figure>
                     </a>
                 </div>
             {% endfor %}    

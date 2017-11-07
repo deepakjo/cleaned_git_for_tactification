@@ -83,13 +83,19 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
-    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],
-                                backref=db.backref('follower', lazy='joined'),
-                                lazy='dynamic', cascade='all, delete-orphan')
-    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
-                                backref=db.backref('followed', lazy='joined'),
-                                lazy='dynamic', cascade='all, delete-orphan')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
+
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+
+    @password.setter
+    def password(self, password):
+        print password
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -216,7 +222,8 @@ class Post(db.Model):
             'timestamp' : self.timestamp,
             'author' : url_for('api.get_user_info', id=self.author_id, _external=True),
             'comments' : url_for('api.get_post_comments', id=self.id, _external=True),
-            'comment_count': self.comments.count()
+            'comment_count': self.comments.count(),
+            'videoId': self.ytVideoId
         }
         
         return json_post
@@ -240,8 +247,6 @@ class Post(db.Model):
         return Post(body=body,  header=header, twTag=twTag,
                             tactic_pic=file_details[0],  tactic_url=file_details[1])
     
-db.event.listen(Post.body, 'set', Post.on_changed_body)
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

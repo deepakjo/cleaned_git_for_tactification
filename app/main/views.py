@@ -6,7 +6,6 @@ from decorators import admin_required, permission_required
 from . import main
 from .utils import get_pages, get_random_posts
 from ..models import User, Post, Comment
-from ..email import send_email
 from ..models import Permission
 from .. import db, gifs
 from ..utils import get_post, get_comment_fields_in_json,  add_comment_to_db
@@ -94,11 +93,12 @@ def play_video():
     print 'timestamp:', post.timestamp
     print 'timedelta:', timedelta(days=7)
     print 'utc:', datetime.utcnow()
+    print 'post video', post.ytVideoId
     current_time = datetime.utcnow()
     post_time = post.timestamp
     if (current_time > post_time + timedelta(minutes=5)):
         return jsonify({'result':'pass', 'display': True,
-                        'video_id':post['ytVideoId']})    
+                        'video_id':post.ytVideoId})    
     else:
         date_of_posting = post.timestamp + timedelta(days=7)
         return jsonify({'result':'pass', 'display': False, 'date': date_of_posting.strftime("%m/%d/%Y")})

@@ -204,11 +204,15 @@ $(document).ready(function(){
     })
   })
 
-function changeVideo(vId){
+function PlayVideo(vId){
     var iframe=document.getElementById("iframeYoutube");
     iframe.src="https://www.youtube.com/embed/"+vId+"?html5=1";
     $("#myModal").modal("show");
 }
+
+$("#myModal").on('hidden.bs.modal', function (e) {
+    $("#myModal iframe").attr("src", $("#myModal iframe").attr("src"));
+});
 
 function yt_click(post_id){
     console.log("Comment17");
@@ -224,7 +228,7 @@ function yt_click(post_id){
         console.log(JSON.stringify(data));
         if (data['result'] == 'pass')
             if (data['display'] == true)
-                changeVideo(data['video_id']);
+                PlayVideo(data['video_id']);
             else
                 alert('Video will be uploaded on ' + data['date']);                            
     }).fail(function(data, status) {
@@ -252,7 +256,24 @@ $(document).ready(function(){
     document.getElementById("dateId").innerHTML = d;
 }); 
 
+function updateStatusCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      console.alert('Its connected');
+    } else {
+      // The person is not logged into your app or we are unable to tell.
+        console.alert('Its not authorized');
+    }
+}
+
 $(document).ready(function() {
+    console.log('calling fb Init');
     $.ajaxSetup({ cache: true });
     $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
       FB.init({

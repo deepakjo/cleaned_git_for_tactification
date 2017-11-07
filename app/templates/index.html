@@ -78,7 +78,7 @@
                 <footer class="blockqt-color">Johan Cryuff</footer>
                     <form class="form-inline">
                         <div class="form-group">
-                            <button id="inspire-btn" type="button" class="btn-primary" onclick="changeVideo('xX4mEhA0D_I')" >
+                            <button id="inspire-btn" type="button" class="btn-primary" onclick="inspireVideo('xX4mEhA0D_I')" >
                                 <span class="glyphicon glyphicon-play-circle"></span>
                                 Inspired from
                             </button>                                        
@@ -107,20 +107,10 @@
       </div>
     </div>
     
-	{% include "signin.html" %}
+	{% include "index_signin.html" %}
 	
 	<hr>
-    <div class="container-fluid">
-        <div class="jumbotron">
-            <h1 style="color:black">Tactification...</h1>      
-            <p style="color:black"> is an attempt to discuss and learn football tactics. When I watch football, I always try to predict next pass based on players teammates in maximum space.
-                But never able to forecast what the pass the received player gonna pick.</p>
 
-            <p style="color:black">Here in tactification.com, I will post some interesting movements from games and listen to viewers for their predictions for the next moves and justification for their predictions.
-                Everyweek, will create a new post and the video of the play will be posted in tactification's youtube channel after one week.
-            </p>
-        </div>
-    </div>
 
     {% if now_running %}
         <section class="action">
@@ -128,7 +118,7 @@
             <div class="container">
                 <div class="row">
                 <div class="col-md-6">
-                    <h4>{{ now_running.header }}</h4>
+                    <h3>{{ now_running.header }}</h3>
                     <p class="running-post">{{ now_running.body }}</p> 
                 </div>
                     <div id="mainPost" class="right-image col-md-6">

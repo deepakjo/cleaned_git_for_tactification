@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -32,7 +31,6 @@ def create_app(config_name):
     patch_request_class(app)
 
     bootstrap.init_app(app)
-    mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)

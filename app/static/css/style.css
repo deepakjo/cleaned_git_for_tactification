@@ -774,7 +774,7 @@ ul.social_icons li  a i{
 	position: relative;	
 	margin-top:30px;
 	margin-bottom:30px;
-	background: #272727;
+	background: #FFFFFF;
 	text-align: center;
 	cursor: pointer;
 }
@@ -784,7 +784,8 @@ ul.social_icons li  a i{
 	display: block;
   opacity: 0.8;
   height: 300px;
-  width: 400px; 
+  width: 100%; 
+
 }
 
 .gallery figure figcaption {

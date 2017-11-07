@@ -11,7 +11,7 @@ from .. import photos
 def prepend_provider_in_uid(provider, user_id):
     if (provider == 'facebook'):
         user_id = user_id + 'fb'
-    elif (provider == 'twitter')
+    elif (provider == 'twitter'):
         user_id = user_id + 'tw'
 
     print 'provider', provider

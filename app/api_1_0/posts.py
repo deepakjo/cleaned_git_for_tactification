@@ -51,7 +51,7 @@ def edit_post(id):
         raise KeyError
 
     try:
-        hashTag = json_post.get('twTag')    
+        hashTag = request.form['twTag']    
     except KeyError:
         raise KeyError
 
@@ -126,14 +126,13 @@ def api_rt_post_comment(id):
     comment_obj = add_comment_to_db(comment_in_json)
     return  jsonify(comment_obj.to_json(),  {'Location': url_for('api.api_rt_get_post', id=comment_obj.post_id, _external=True)})
     
-@api_rt.route('/add_video/<int:id>', methods=['PUT'])
+@api_rt.route('/add_video/<int:id>', methods=['PUT', 'POST'])
 @permission_required(Permission.WRITE_ARTICLES)    
 def api_rt_update_yt_Video(id):
     post = get_post(id)
 
-    args = request.get_json(force=True)
     try:
-        videoId = args['videoId']
+        videoId = request.form['videoId']
     except KeyError:
         raise KeyError
 
