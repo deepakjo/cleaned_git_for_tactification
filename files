@@ -1,0 +1,15 @@
+rm ./app/.__init__.py.swp
+rm ./app/api_1_0/.errors.py.swp
+rm ./app/api_1_0/.authentication.py.swp
+rm ./app/api_1_0/.posts.py.swp
+rm ./app/.models.py.swp
+rm ./app/static/css/.style.css.swp
+rm ./app/static/css/.bootstrap.css.swp
+rm ./app/static/js/.for_ajax.js.swp
+rm ./app/main/.views.py.swp
+rm ./app/main/.forms.py.swp
+rm ./app/templates/.index.html.swp
+rm ./app/oauth/flask_oauthlib/.client.py.swp
+rm ./.manage.py.swp
+rm ./selenium/.test_selenium.py.swp
+rm ./migrations/versions/.79cbe9100464_removed_one_src_file.py.swp
