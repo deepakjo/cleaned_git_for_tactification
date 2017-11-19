@@ -113,21 +113,24 @@
 
 
     {% if now_running %}
-        <section class="action">
+    <div class="container-fluid">
+        <div class="jumbotron">
             <a href="{{ url_for('.post', id=now_running.id) }}">
-            <div class="container">
+            
                 <div class="row">
-                <div class="col-md-6">
-                    <h3>{{ now_running.header }}</h3>
-                    <p class="running-post">{{ now_running.body }}</p> 
-                </div>
-                    <div id="mainPost" class="right-image col-md-6">
+                    <div class="col-md-6">
+                        <img id="mainPost" class="img-responsive" src="{{ now_running.render_tactics_pic() }}">
+                    </div>                    
+                    <div class="col-md-6">
+                        <h3>{{ now_running.header }}</h3>
+                        <br>
+                        <p class="running-post">{{ now_running.body }}</p> 
                     </div>
                 </div>
-            </div>
+            
             </a>
-        </section>
-    
+        </div>
+    </div>
 
     {% endif %}
 

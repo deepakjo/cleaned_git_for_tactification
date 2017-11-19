@@ -6,12 +6,12 @@ and also setting config environment.
 import os
 from app import create_app, db
 from app.models import User, Role, Post, Comment
-from flask_script import Manager, Shell, Server
+from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'development')
-manager = Manager(app)
-migrate = Migrate(app, db)         
+app = create_app(os.getenv('FLASK_CONFIG') or 'development') # pylint: disable=invalid-name
+manager = Manager(app) # pylint: disable=invalid-name
+migrate = Migrate(app, db) # pylint: disable=invalid-name
 
 ####Code coverage
 if os.environ.get('FLASK_COVERAGE'):
@@ -39,13 +39,13 @@ def test(coverage=False):
     if COV:
         COV.stop()
         COV.save()
-        print('Coverage Summary:')
+        print "'Coverage Summary:'"
         COV.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
-        print ('Base dir:', basedir)
+        print 'Base dir:', basedir
         covdir = os.path.join(basedir, 'tmp/coverage')
         COV.html_report(directory=covdir)
-        print('HTML version: file://%s/index.html' % covdir)
+        print 'HTML version: file://%s/index.html' % covdir
         COV.erase()
 
 def delete():

@@ -31,11 +31,7 @@ def index():
         if isinstance(post.author, User):
             post_list.append(post)
 
-    if (page == 1):
-        posts = posts[1:]
-    else:
-        posts = posts
-
+    posts = posts[1:]
     print 'posts', posts
     return render_template('index.html', posts=posts, pagination=pagination, now_running=now_running)
 
@@ -53,8 +49,10 @@ def submit_comment():
     comment_entry = request.get_json()
     try:
         name = comment_entry['name']
+        by_anonymous=True
     except KeyError:
         name = current_user.name
+        by_anonymous=False
 
     try:
         comment = comment_entry['comment']
@@ -66,7 +64,7 @@ def submit_comment():
     except KeyError:
         return jsonify(status_code=400)
 
-    comment_in_json = get_comment_fields_in_json(body = comment, author_name = name)
+    comment_in_json = get_comment_fields_in_json(body=comment, author_name=name,by_anonymous=by_anonymous)
     if (comment_in_json.get('result') == 'fail'):
         return jsonify({'result' : 'Fail'})
 
@@ -96,7 +94,7 @@ def play_video():
     print 'post video', post.ytVideoId
     current_time = datetime.utcnow()
     post_time = post.timestamp
-    if (current_time > post_time + timedelta(minutes=5)):
+    if (current_time > post_time + timedelta(days=7)):
         return jsonify({'result':'pass', 'display': True,
                         'video_id':post.ytVideoId})    
     else:

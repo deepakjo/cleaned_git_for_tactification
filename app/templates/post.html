@@ -94,13 +94,14 @@
                 <br>
             </div>
         </div>
+        <div class="jumbotron">
         <!-- Portfolio Item Heading -->
         <div class="row">
-            <div class="col-xs-8">
+            <div class="col-md-8">
                 <h1 id="post-hdr-id" class="post-header" >{{ post.header }}
                 </h1>
             </div>
-            <div class="col-xs-4>">
+            <div class="hidden-xs col-md-4">
                 <button type="button" id="dateId" class="btn btn-default date-css"></p>
             </div>
         </div>
@@ -110,7 +111,15 @@
         <div class="row">
             <div class="col-md-10 col-xs-12">
                 <div>
-                    <img id="postPic" class="img-responsive" alt="">
+                    <img class="img-responsive" 
+                    srcset="{{ post.tactic_url_875px }} 875w, 
+                            {{ post.tactic_url_1575px }} 1575w, 
+                            {{ post.tactic_url_1750px }} 1750w" 
+                    sizes="(max-width: 875px) 100vw, 
+                           (max-width: 1575px) 100vw, 
+                           1750vw"
+                    src="{{ post.tactic_url_1200px }}" alt="Main Pic">
+
                 </div>
             </div>
             <div class="col-md-4">
@@ -120,15 +129,18 @@
         <br>
 
         <div class="row">
-            <div class="col-md-6 col-xs-6 col-xs-offset-6 col-md-offset-6">
+            <div class="col-md-offset-5 col-md-7">
                 <ul class="share">       
                     <li><button id="yt-shareBtn" class="yt-button" type="button" onclick="yt_click(post_id)"></button></li>             
                     <li><button id="fb-shareBtn" class="fb-button" type="button" onclick="fb_click(post_url, post_hdr, post_pic_url)"></button></li>
                     <li><button id="tw-shareBtn" class="tw-button" type="button" onclick="tw_click(twttr, post_url, post_hdr, post_tag)"></button></li>
                     <li><i id="tc-comments" class="fa fa-comments" title="comments">{{ no_of_comments }}</i></li>                
+
                 </ul>    
             </div>
         </div>
+
+        <br>
 
         <!--a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Football is my religion" data-via="deepakpjose" data-hashtags="football" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script-->
 
@@ -149,21 +161,21 @@
         <div>
             <h4>Comments</h4>
             {% if current_user.can(Permission.COMMENT) %}
-                
+                <div class=form-group>
                     <div style="color:black">
                         {% if current_user.is_authenticated %}
-                            <textarea id="textIdwithUser" rows="10" cols="100" name="comment"></textarea>
+                            <textarea id="textIdwithUser" class="form-control" rows="10" cols="100" name="comment"></textarea>
                             <br>
                             <button type="submit" id="submitWithOutName">Submit</button>
                         {% else %}
-                            <input id="inputId" type="text" size="20" name="uname" placeholder="Name">
+                            <input id="inputId" class="form-control" type="text" size="20" name="uname" placeholder="Name">
                             <br>
-                            <textarea id="textIdwithOutUser" rows="10" cols="100" name="comment" placeholder="What do you think?"></textarea>
+                            <textarea id="textIdwithOutUser" class="form-control" rows="10" cols="100" name="comment" placeholder="What do you think?"></textarea>
                             <br>
                             <button type="submit" id="submitWithName">Submit</button>
                         {% endif %}
                     </div>
-                    
+                </div>
             {% endif %}
 
             <hr>
@@ -179,6 +191,7 @@
                 </div>
             {% endif %}
         </div>
+        </div><!--jumbotron-->
         <!-- ./row for comments-->
 
         {% if rand_posts %}
@@ -201,9 +214,10 @@
             {% endfor %}    
         </div>
         <!-- /.row -->
+        <hr>
         {% endif %}
 
-        <hr>
+        
     </div>
     <!-- /.container -->
                     

@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
     console.log("here");
-    $('.action .right-image').css('background-image','url(' + background_img_url + ')');
+    $("#mainPost").css({"background-size": "100%"});
 }); 
 
 $(function() {

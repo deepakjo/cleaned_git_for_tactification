@@ -10,7 +10,7 @@ def get_pages(page=1):
         per_page = current_app.config['FLASKY_POSTS_PER_PAGE'] + 1
         print 'if per_page', per_page
     else:
-        per_page = current_app.config['FLASKY_POSTS_PER_PAGE']
+        per_page = current_app.config['FLASKY_POSTS_PER_PAGE'] + 1
         print 'else per_page', per_page
 
 

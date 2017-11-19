@@ -121,11 +121,16 @@ $(function() {
     });
 });
 
+//$(document).ready(function(){
+//    console.log("postPic");
+//    $("#postPic").attr("src", post_pic_url);
+//    $('#postPic').width(1200);
+//    $('#postPic').height(550);
+//})
+
 $(document).ready(function(){
-    console.log("postPic");
-    $("#postPic").attr("src", post_pic_url);
-    $('#postPic').width(1200);
-    $('#postPic').height(550);
+    console.log("zonePic");
+    $("#zonePic").attr("src", 'football_zones.png');
 })
 
 $(function() {

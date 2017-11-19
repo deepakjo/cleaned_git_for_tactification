@@ -11,18 +11,58 @@ from ..utils import get_post, get_comment_fields_in_json,  add_comment_to_db
 @permission_required(Permission.WRITE_ARTICLES)
 def new_post():
  
+    file_tuples = []
+
     if 'tactical_gif' in request.files:
         print request.files['tactical_gif']
         filename = gifs.save(request.files['tactical_gif'])
         file_url = gifs.url(filename)
         file_details = (filename,  file_url)
+        file_tuples.append(file_details)
         print "file_url=%s file_details=%s" %(file_url,  file_details)
     else:
         print 'Else'
         raise ValidationError('File is a must for POST')
         return jsonify('Error')
-        
-    post = Post.from_json(request.form,  file_details)
+
+    if 'tactical_pic_1750' in request.files:
+        print request.files['tactical_pic_1750']
+        filename = gifs.save(request.files['tactical_pic_1750'])
+        file_url = gifs.url(filename)
+        file_details = (filename,  file_url)
+        file_tuples.append(file_details)
+        print "file_url=%s file_details=%s" %(file_url,  file_details)
+    else:
+        print 'Else'
+        raise ValidationError('File is a must for POST')
+        return jsonify('Error')
+
+    if 'tactical_pic_1575' in request.files:
+        print request.files['tactical_pic_1575']
+        filename = gifs.save(request.files['tactical_pic_1575'])
+        file_url = gifs.url(filename)
+        file_details = (filename,  file_url)
+        file_tuples.append(file_details)
+        print "file_url=%s file_details=%s" %(file_url,  file_details)
+    else:
+        print 'Else'
+        raise ValidationError('File is a must for POST')
+        return jsonify('Error')
+
+    if 'tactical_pic_875' in request.files:
+        print request.files['tactical_pic_875']
+        filename = gifs.save(request.files['tactical_pic_875'])
+        file_url = gifs.url(filename)
+        file_details = (filename,  file_url)
+        file_tuples.append(file_details)
+        print "file_url=%s file_details=%s" %(file_url,  file_details)
+    else:
+        print 'Else'
+        raise ValidationError('File is a must for POST')
+        return jsonify('Error')
+
+    print 'type of file_tuples:', type(file_tuples)
+    post = Post.from_json(request.form,  file_tuples)
     post.author = g.current_user
     post.author_id = g.current_user.id
     print 'author.id', g.current_user.id
