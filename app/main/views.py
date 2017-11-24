@@ -72,9 +72,7 @@ def submit_comment():
     post_entry = dict()
     post_entry['post'] = post
     comment_in_json.update(post_entry)
-    print 'comment_in_json', comment_in_json
     comment_obj = add_comment_to_db(comment_in_json)
-    print 'comment_obj', comment_obj.to_json()
     return jsonify(comment_obj.to_json())
 
 @main.route('/play_video', methods = ['POST', 'PUT'])

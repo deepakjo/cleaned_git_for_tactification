@@ -28,6 +28,7 @@ def get_comment_fields_in_json(body, author_name=None, by_anonymous=False):
     """
     getting comment fields in the form of json.
     """
+    print 'to json', body, author_name, by_anonymous
     comment = auth_details = anonymous_user = {}
     if body is None:
         return ({'result':'fail', 'error':'comment not provided'})
@@ -54,12 +55,11 @@ def add_comment_to_db(comment_in_json):
     adding comments into the db.
     """
 
-    print 'comment_in_json', comment_in_json
-    try:
+    if comment_in_json['by_anonymous'] is False:
         comment_obj = Comment(body=comment_in_json['body'], post=comment_in_json['post'],
                               author=current_user._get_current_object(), 
                               by_anonymous=comment_in_json['by_anonymous'])
-    except KeyError:
+    else:
         author_name = comment_in_json['author_name']
         comment_obj = Comment(body=comment_in_json['body'], post=comment_in_json['post'],
                               anonymous_user_name=author_name, by_anonymous=comment_in_json['by_anonymous'])

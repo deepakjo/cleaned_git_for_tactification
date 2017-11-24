@@ -8,7 +8,7 @@
 @import url('https://fonts.googleapis.com/css?family=Lora');
 @import url('font-awesome.css');
 /* ==== overwrite bootstrap standard ==== */
-@import url('animate.css');
+@import url('animate.min.css');
 
 
 
