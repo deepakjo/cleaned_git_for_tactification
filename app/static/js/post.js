@@ -256,14 +256,7 @@ function test_field(is_authenticated) {
     }
 }
 
-$(document).ready(function(){
-    var d = moment(post_time).format("MMM Do YY");
-    document.getElementById("dateId").innerHTML = d;
-}); 
-
 function updateStatusCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
     // The response object is returned with a status field that lets the
     // app know the current login status of the person.
     // Full docs on the response object can be found in the documentation
@@ -286,6 +279,6 @@ $(document).ready(function() {
         version: 'v2.7' // or v2.1, v2.2, v2.3, ...
       });     
       $('#loginbutton,#feedbutton').removeAttr('disabled');
-      FB.getLoginStatus(updateStatusCallback);
+      //FB.getLoginStatus(updateStatusCallback);
     });
 });

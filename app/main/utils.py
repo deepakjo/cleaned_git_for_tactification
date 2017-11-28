@@ -35,7 +35,10 @@ def get_random_posts(id):
     if (len(posts) < 5):
         return None
 
-    rand_numbers = random.sample(range(1, len(posts)), 5)
+    try:
+        rand_numbers = random.sample(range(1, len(posts)), 5)
+    except ValueError:
+        rand_numbers = range(1,5)
 
     print 'list of rand_numbers', rand_numbers
 

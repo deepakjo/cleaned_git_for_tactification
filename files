@@ -1,15 +1,50 @@
-rm ./app/.__init__.py.swp
-rm ./app/api_1_0/.errors.py.swp
-rm ./app/api_1_0/.authentication.py.swp
-rm ./app/api_1_0/.posts.py.swp
-rm ./app/.models.py.swp
-rm ./app/static/css/.style.css.swp
-rm ./app/static/css/.bootstrap.css.swp
-rm ./app/static/js/.for_ajax.js.swp
-rm ./app/main/.views.py.swp
-rm ./app/main/.forms.py.swp
-rm ./app/templates/.index.html.swp
-rm ./app/oauth/flask_oauthlib/.client.py.swp
-rm ./.manage.py.swp
-rm ./selenium/.test_selenium.py.swp
-rm ./migrations/versions/.79cbe9100464_removed_one_src_file.py.swp
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   app/main/utils.py
+	modified:   app/static/css/style.css
+	modified:   app/static/css/style.min.css
+	modified:   app/static/js/post.js
+	modified:   app/static/js/post.min.js
+	modified:   app/templates/footer_file.html
+	modified:   app/templates/post.html
+	modified:   data-dev.sqlite
+	modified:   files
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	app/__init__.pyc
+	app/api_1_0/__init__.pyc
+	app/api_1_0/authentication.pyc
+	app/api_1_0/decorators.pyc
+	app/api_1_0/errors.pyc
+	app/api_1_0/posts.pyc
+	app/api_1_0/users.pyc
+	app/auth/__init__.pyc
+	app/auth/views.pyc
+	app/exceptions.pyc
+	app/main/__init__.pyc
+	app/main/decorators.pyc
+	app/main/errors.pyc
+	app/main/utils.pyc
+	app/main/views.pyc
+	app/models.pyc
+	app/oauth/__init__.pyc
+	app/oauth/flask_oauthlib/__init__.pyc
+	app/oauth/flask_oauthlib/client.pyc
+	app/oauth/flask_oauthlib/utils.pyc
+	app/oauth/models.pyc
+	app/oauth/views.pyc
+	app/utils.pyc
+	config.pyc
+	config_glb_vars.pyc
+	gifs/
+	manage.pyc
+	wsgi.pyc
+
+no changes added to commit (use "git add" and/or "git commit -a")

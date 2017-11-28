@@ -1,0 +1,6 @@
+scp -i /home/deepak/python/flask/myssh.pem app/main/utils.py ubuntu@ec2-13-127-31-149.ap-south-1.compute.amazonaws.com:/home/bitnami/blog_for_grunt/app/main/utils.py
+scp -i /home/deepak/python/flask/myssh.pem app/static/css/style.css ubuntu@ec2-13-127-31-149.ap-south-1.compute.amazonaws.com:/home/bitnami/blog_for_grunt/app/static/css/style.css
+scp -i /home/deepak/python/flask/myssh.pem app/static/css/style.min.css ubuntu@ec2-13-127-31-149.ap-south-1.compute.amazonaws.com:/home/bitnami/blog_for_grunt/app/static/css/style.min.css
+scp -i /home/deepak/python/flask/myssh.pem app/static/js/post.js ubuntu@ec2-13-127-31-149.ap-south-1.compute.amazonaws.com:/home/bitnami/blog_for_grunt/app/static/js/post.js
+scp -i /home/deepak/python/flask/myssh.pem app/static/js/post.min.js ubuntu@ec2-13-127-31-149.ap-south-1.compute.amazonaws.com:/home/bitnami/blog_for_grunt/app/static/js/post.min.js
+scp -i /home/deepak/python/flask/myssh.pem app/templates/post.html ubuntu@ec2-13-127-31-149.ap-south-1.compute.amazonaws.com:/home/bitnami/blog_for_grunt/app/templates/post.html
