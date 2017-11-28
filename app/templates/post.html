@@ -106,15 +106,15 @@
 
         <!-- Portfolio Item Row -->
         <div class="row">
-            <div class="col-md-10 col-xs-12">
+            <div class="col-xs-12">
                 <div>
                     <img class="img-responsive" 
                     srcset="{{ post.tactic_url_875px }} 525w, 
                             {{ post.tactic_url_1575px }} 1050w, 
                             {{ post.tactic_url_1750px }} 1575w" 
-                    sizes="(max-width: 600px) 100vw, 
-                           (max-width: 1100px) 100vw, 
-                           100vw"
+                    sizes="(max-width: 600px) 500px, 
+                           (max-width: 1100px) 1000px, 
+                           1500px"
                     src="{{ post.tactic_url_1750px }}" alt="Main Pic">
 
                 </div>
@@ -126,13 +126,11 @@
         <br>
 
         <div class="row">
-            <div class="col-md-offset-5 col-md-7">
+            <div class="col-xs-12">
                 <ul class="share">       
                     <li><button id="yt-shareBtn" class="yt-button" type="button" onclick="yt_click(post_id)"></button></li>             
                     <li><button id="fb-shareBtn" class="fb-button" type="button" onclick="fb_click(post_url, post_hdr, post_pic_url)"></button></li>
-                    <li><button id="tw-shareBtn" class="tw-button" type="button" onclick="tw_click(twttr, post_url, post_hdr, post_tag)"></button></li>
-                    <li><i id="tc-comments" class="fa fa-comments" title="comments">{{ no_of_comments }}</i></li>                
-
+                    <li><button id="tw-shareBtn" class="tw-button" type="button" onclick="tw_click(twttr, post_url, post_hdr, post_tag)"></button></li>               
                 </ul>    
             </div>
         </div>
@@ -243,9 +241,8 @@
     
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-    <scrint type="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
     <script type="text/javascript" src="../static/js/post.min.js"></script>
     <script>window.twttr = (function(d, s, id) {

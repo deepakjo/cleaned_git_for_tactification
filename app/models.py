@@ -388,8 +388,7 @@ class Comment(db.Model):
             'ts' : self.timestamp,
             'is_anon' : self.by_anonymous,
             'pfl_pic' : profile_pic_url,
-            'uname' : uname, 
-            'ts' : self.timestamp.utcnow()
+            'uname' : uname
         }
 
         print 'JSON_POST', json_post
