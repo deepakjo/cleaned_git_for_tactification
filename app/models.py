@@ -2,14 +2,24 @@
 all db classes and attributes are defined in this function
 """
 from datetime import datetime
+from random import sample
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app, url_for
 from flask_login import UserMixin, AnonymousUserMixin
+from avinit import get_avatar_data_url
 from app import db
 from . import login_manager
 #for pictures and gifs
 from . import photos
+
+DEFAULT_COLORS = [
+    "#1abc9c", "#16a085", "#f1c40f", "#f39c12", "#2ecc71", "#27ae60",
+    "#e67e22", "#d35400", "#3498db", "#2980b9", "#e74c3c", "#c0392b",
+    "#9b59b6", "#8e44ad", "#bdc3c7", "#34495e", "#2c3e50", "#95a5a6",
+    "#7f8c8d", "#ec87bf", "#d870ad", "#f69785", "#9ba37e", "#b49255",
+    "#b49255", "#a94136",
+]
 
 #pg112
 class Permission:
@@ -370,12 +380,27 @@ class Comment(db.Model):
         
         self.by_anonymous = by_anonymous
 
+    def get_anonymous_pic(self, username):
+        if username is None:
+            print 'returning'
+            return
+
+        colors = list()
+        color_list = sample(range(1, len(DEFAULT_COLORS)), 3)
+        for color in color_list:
+            colors.append(DEFAULT_COLORS[color])
+
+        print 'colors:', colors
+        print 'name:', username
+        data = get_avatar_data_url(username, colors=colors)
+        return data
+
     def to_json(self):
         """
         api to convert to json for rest apis and ajax calls
         """
         if self.by_anonymous:
-            profile_pic_url = url_for('static', filename='anonymous.jpg', _external=True)
+            profile_pic_url = self.get_anonymous_pic(self.anonymous_user_name)
             uname = self.anonymous_user_name
         else:
             profile_pic_url = self.author.profile_pic_url()

@@ -1,13 +1,23 @@
 """
 apps utilities function has to be added in this file
 """
+from random import sample
 from flask_login import current_user
+from avinit import get_avatar_data_url
 from app import db
 from .models import Comment, Post
+from .main import main
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+DEFAULT_COLORS = [
+    "#1abc9c", "#16a085", "#f1c40f", "#f39c12", "#2ecc71", "#27ae60",
+    "#e67e22", "#d35400", "#3498db", "#2980b9", "#e74c3c", "#c0392b",
+    "#9b59b6", "#8e44ad", "#bdc3c7", "#34495e", "#2c3e50", "#95a5a6",
+    "#7f8c8d", "#ec87bf", "#d870ad", "#f69785", "#9ba37e", "#b49255",
+    "#b49255", "#a94136",
+]
 
-def allowed_file(filename):
+def allowed_file(filename): 
     """
     types of files allowed to store in db.
     """
@@ -67,3 +77,22 @@ def add_comment_to_db(comment_in_json):
     db.session.add(comment_obj)
     db.session.commit()
     return comment_obj
+
+@main.context_processor
+def anonymous_utility_processor():
+    def get_anonymous_pic(username):
+        if username is None:
+            print 'returning'
+            return
+
+        colors = list()
+        color_list = sample(range(1, len(DEFAULT_COLORS)), 3)
+        for color in color_list:
+            colors.append(DEFAULT_COLORS[color])
+
+        print 'colors:', colors
+        print 'name:', username
+        data = get_avatar_data_url(username, colors=colors)
+        return data
+
+    return dict(get_anonymous_pic = get_anonymous_pic)
