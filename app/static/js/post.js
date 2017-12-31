@@ -235,7 +235,7 @@ function yt_click(post_id){
             if (data['display'] == true)
                 PlayVideo(data['video_id']);
             else
-                alert('Video will be uploaded on ' + data['date']);                            
+                alert('Video will be uploaded in ' + moment(data['date']).fromNow());                            
     }).fail(function(data, status) {
         console.log(status);
         console.log(JSON.stringify(data));

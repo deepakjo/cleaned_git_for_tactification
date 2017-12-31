@@ -2,7 +2,16 @@
 <html lang="en">
 
 <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111663409-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-111663409-1');
+</script>
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +19,7 @@
     <meta name="author" content="">
 
     <!-- facebook meta fields-->
+    <meta property="fb:app_id" content="966242223397117" />
     <meta property="og:url" content="{{ url_for('main.post', id=post.id, _external=True) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ post.header }}"/>
@@ -46,7 +56,7 @@
     var post_pic_url = "{{ post.render_tactics_pic() }}";
 </script>   
 
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
+<body>
 
 <header id="header">
         <nav class="navbar navbar-inverse">
@@ -57,7 +67,7 @@
                     </a>                      
                   </div>
                   <ul class="nav navbar-nav">
-                    <li id="home-btn" class="active">
+                    <li id="home-btn">
                         <a href="{{ url_for('.index') }}">
                             <h4 class="nav-css">Home</h4>
                         </a>

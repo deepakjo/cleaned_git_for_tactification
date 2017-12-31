@@ -5,7 +5,7 @@
     Author URL: https://bootstrapmade.com
 */
 /* ==== Google font ==== */
-@import url('https://fonts.googleapis.com/css?family=Lora');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('font-awesome.css');
 /* ==== overwrite bootstrap standard ==== */
 @import url('animate.min.css');
@@ -13,7 +13,7 @@
 
 
 body {
-	font-family: 'Lora', Arial, sans-serif;
+	font-family: 'Open Sans', Arial, sans-serif;
 	font-size:14px;
 	font-weight:300;
 	line-height:1.6em;
@@ -141,7 +141,6 @@ a:hover {
 
 .navbar-default {
     background:#FFFFFF;
-	border-color:#65AAF0;
 }
 
 /*===========================
