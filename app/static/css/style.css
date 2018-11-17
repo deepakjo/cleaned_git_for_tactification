@@ -1123,6 +1123,13 @@ h3.blog-comment {
   font-size: 16px;
 }
 
+h3.blog-comment-ajax {
+  display: table-cell;
+  vertical-align: top;
+  font-family: italic;
+  font-size: 16px;
+}
+
 h1.post-header {
   font-size: 2vw;
   color: #060606;
@@ -1204,4 +1211,13 @@ i {
 
 .table-user {
   color: #000000;
+}
+
+.comment-hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #0D0C0C;
+  margin: 1em 0;
+  padding: 0; 
 }

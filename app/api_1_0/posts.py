@@ -122,12 +122,17 @@ def delete_post(id):
     :type id: int
     """
     print 'postid:', id
-    post = Post.query.get_or_404(id)
-                 
+    post = get_post(id)
+
+    if post is None:
+        posts = Post.query.order_by(Post.timestamp.desc()).all()
+        return jsonify({'result': 'fail', "count": len(posts)}) 
+
+    print 'post', post             
     db.session.delete(post)
     db.session.commit()
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return jsonify({"count": len(posts)})
+    return jsonify({'result': 'pass', "count": len(posts)})
 
 @api_rt.route('/number_of_posts', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
@@ -166,7 +171,7 @@ def api_rt_post_comment(id):
     comment_obj = add_comment_to_db(comment_in_json)
     return  jsonify(comment_obj.to_json(),  {'Location': url_for('api.api_rt_get_post', id=comment_obj.post_id, _external=True)})
     
-@api_rt.route('/add_video/<int:id>', methods=['PUT', 'POST'])
+@api_rt.route('/add_video/<int:id>', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)    
 def api_rt_update_yt_Video(id):
     post = get_post(id)
@@ -176,7 +181,15 @@ def api_rt_update_yt_Video(id):
     except KeyError:
         raise KeyError
 
+    try:
+        isEmbedded = request.form['isEmbedded']
+    except KeyError:
+        raise KeyError
+
     post.ytVideoId = videoId
+    post.set_embedded(isEmbedded)
+
+    db.session.add(post)
     db.session.commit()
     return jsonify(post.to_json()), 201, \
 	       {'Location': url_for('api.api_rt_get_post', id=post.id, _external=True)}      

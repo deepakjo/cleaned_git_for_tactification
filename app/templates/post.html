@@ -11,7 +11,7 @@
 
   gtag('config', 'UA-111663409-1');
 </script>
-    
+    <title>{{ post.header }}</title>   
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
     <meta property="og:url" content="{{ url_for('main.post', id=post.id, _external=True) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ post.header }}"/>
-    <meta property="og:description" content="{{ post.body }}"/>
+    <meta property="og:description" content="{{ post.body_clean() }}"/>
     <meta property="og:image" content="{{ post.render_tactics_pic() }}"/>
     <meta property="og:image:height" content="720"/>
     <meta property="og:image:width" content="1200"/>
@@ -34,6 +34,31 @@
     <link href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/tinymce/tinymce.min.js"></script>   
+    <script>tinymce.init({  selector:'#textIdwithOutUser',        
+                            statusbar: false,
+                            theme : "modern",
+                            mode: 'textareas',
+                            forced_root_block : true,
+                            forced_root_block : '',
+                            setup: function (editor) {
+                               editor.on('change', function () {
+                                editor.save();
+                                });
+                            } 
+                        });</script>
+    <script>tinymce.init({  selector:'#textIdwithUser',        
+                            statusbar: false,
+                            mode: 'textareas',
+                            theme : "modern",
+                            forced_root_block : '',
+                            setup: function (editor) {
+                                editor.on('change', function () {
+                                 editor.save();
+                                 });
+                             } 
+                         });
+    </script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,6 +76,7 @@
     var post_id = "{{ post.id }}";
     var post_tag = "{{ post.twTag }}";
     var post_time = "{{ post.timestamp }}";
+    var post_date = "{{ post.post_date_in_isoformat() }}";
     var submit_url = "{{  url_for('main.submit_comment') }}";
     var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     var post_pic_url = "{{ post.render_tactics_pic() }}";
@@ -73,7 +99,7 @@
                         </a>
                     </li>
                   </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                  <!--ul class="nav navbar-nav navbar-right">
                     <li>
                     {% if current_user.is_authenticated %}
                         <a id="signout-btn" href="{{ url_for('auth.logout', post_id=-1) }}">
@@ -85,7 +111,7 @@
                         </a>
                     {% endif %}     
                     </li>                     
-                  </ul>
+                  </ul-->
                 </div>
               </nav> 
 
@@ -94,16 +120,15 @@
     {% include "post_signin.html" %}
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container-fluid">
+        <div class="col-sm-9">
         <!-- To find proper position for picture-->
         <div class="row">
             <div class="col-xs-12">
                 <br>
-                <br>
-                <br>
-                <br>
             </div>
         </div>
+        <button class="button button-primary date-button pull-right">{{ post.post_date_in_isoformat() }}</button>
         <div class="jumbotron">
         <!-- Portfolio Item Heading -->
         <div class="row">
@@ -149,7 +174,7 @@
 
         <div class="row">
             <div class="col-md-8 col-xs-12">
-                <p class="post-body">{{ post.body }}</p>
+                <p class="post-body">{{ post.body | safe }}</p>
             </div>
             <div class="col-md-4">
             </div> 
@@ -184,7 +209,6 @@
             <hr>
 
             {% include '_comments.html' %}
-            <div id="div1"></div>
 
             {% if pagination %}
                 <div class="text-center">
@@ -220,8 +244,17 @@
         <hr>
         {% endif %}
 
-        
+        </div>
+        <div class="col-sm-3">
+            <a class="twitter-timeline" 
+               data-width="400" 
+               data-border-color="#1DA1F2"
+               data-height="2000"
+               data-chrome="noheader"
+               href="https://twitter.com/tactification1?ref_src=twsrc%5Etfw">Tweets by tactification1</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
     </div>
+
     <!-- /.container -->
                     
     <!-- Footer -->
@@ -253,6 +286,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
     <script type="text/javascript" src="../static/js/post.min.js"></script>
+    <script type="text/javascript" src="../static/js/video.min.js"></script>
     <script>window.twttr = (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0],
           t = window.twttr || {};

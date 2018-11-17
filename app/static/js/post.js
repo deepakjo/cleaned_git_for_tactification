@@ -1,52 +1,66 @@
-var id = 1;
+var id = 0;
+
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
 
 function addElement(comment_in_json) {
-    var id = 1;
-    console.log('grunt working');
-    var main_div_elem = $('<div />', {id : 'main_div_elem'.concat(id), "class" : "row"});
+    var cur_node_id = id + 1;
+    var main_div_elem = $('<div />', {id : 'div'.concat(cur_node_id), "class" : "row"});
     
-    var col_md_8_elem = $('<div />', {id : 'col_md_8_elem'.concat(id), "class" : "col-md-8"});
+    var col_md_8_elem = $('<div />', {id : 'col_md_8_elem'.concat(cur_node_id), "class" : "col-md-8"});
     main_div_elem.append(col_md_8_elem);  
-    var media_elem = $('<div />', {id : 'media_elem'.concat(id), "class" : "media"});
+    var media_elem = $('<div />', {id : 'media_elem'.concat(cur_node_id), "class" : "media"});
     $(col_md_8_elem).append(media_elem);
-    var media_left_top_elem = $('<div />', {id : 'media_left_top_elem'.concat(id), "class" : "media-left media-top"});
+    var media_left_top_elem = $('<div />', {id : 'media_left_top_elem'.concat(cur_node_id), "class" : "media-left media-top"});
     $(media_elem).append(media_left_top_elem);
 
-    var img_media_elem = $('<img>', {id : 'img_media_elem'.concat(id), "class": "media-object", 
+    var img_media_elem = $('<img>', {id : 'img_media_elem'.concat(cur_node_id), "class": "media-object", 
                                      src : comment_in_json['pfl_pic'],
                                      css : {width : "60px"}}); 
     $(media_left_top_elem).append(img_media_elem);                                       
 
 
-    var media_body_elem = $('<div />', {id : 'media_body_elem'.concat(id), "class" : "media-body"});    
-    var h4_body_elem = $('<div />', {id : 'h4_body_elem'.concat(id), "class" : "media-heading"});
+    var media_body_elem = $('<div />', {id : 'media_body_elem'.concat(cur_node_id), "class" : "media-body"});    
+    var h4_body_elem = $('<div />', {id : 'h4_body_elem'.concat(cur_node_id), "class" : "media-heading"});
     $(media_body_elem).append(h4_body_elem);
     
-    console.log("EVAL");
-    console.log(eval(comment_in_json['is_anon']));
-    var strong_elem = $('<strong />', {id : 'strong_elem'.concat(id), text : comment_in_json['uname'],                                           
+    var strong_elem = $('<strong />', {id : 'strong_elem'.concat(cur_node_id), text : comment_in_json['uname'],                                           
                                        css : {color : 'black', fontSize : "18px"}});
-    var time_elem = $('<h4 />', {id : 'time_elem'.concat(id), 
+    var time_elem = $('<h4 />', {id : 'time_elem'.concat(cur_node_id), 
                                  css : {fontSize : "14px", color: "black"},
                                  text : moment(comment_in_json['ts']).fromNow(refresh = true)});
     $(h4_body_elem).append(strong_elem, time_elem);
 
-    var p_comment_elem = $('<p />', {id : 'p_comment_elem'.concat(id)});
-    
-    var h4_comment_elem = $('<h4 />', {id : 'h4_comment_elem'.concat(id), 
-                                       "class" : "blog-comment",
+    var p_comment_elem = $('<p />', {id : 'p_comment_elem'.concat(cur_node_id)});
+    var h4_html_id = 'h4_comment_elem'.concat(cur_node_id);
+    var h4_comment_elem = $('<h4 />', {id : h4_html_id, 
+                                       //"class" : "blog-comment-ajax",
                                        text : comment_in_json['comment']});
+
     $(p_comment_elem).append(h4_comment_elem);
     $(media_elem).append(media_body_elem);
     $(media_body_elem).append(p_comment_elem);
-    if (comment_in_json['is_anon'] === 1) {
-        $('#div'.concat(id)).append(main_div_elem);
-    } else {
-        $('#div'.concat(id)).append(main_div_elem);        
-    }    
 
-    var children = document.getElementById("div1").childNodes;
-    console.log(children);
+    var prev_div = document.getElementById("div".concat(id));
+    $(main_div_elem).insertAfter(prev_div);
+
+    //if (comment_in_json['is_anon'] === 1) {
+    //    $('#div'.concat(id)).append(main_div_elem);
+    //} else {
+    //    $('#div'.concat(id)).append(main_div_elem);        
+    //}    
+
+    //var value = $(".blog-comment-ajax").text();
+    //$(".blog-comment-ajax").html(comment_in_json['comment']);
+
+    //var value = $(".blog-comment-ajax").text();
+
+    var value = $(h4_comment_elem).text();
+    $(h4_comment_elem).html(comment_in_json['comment']);
+
+    var value = $(h4_comment_elem).text();
+    id = id + 1;
 }
 
 $(function() { 
@@ -55,14 +69,11 @@ $(function() {
         var comment = $('textarea[name="comment"]').val();
         var no_of_comments;
 
-        console.log("New");
         if (uname == '' || comment == '') {
             alert("Name and Comment should not be empty");
             return;
         }
 
-        console.log(uname);
-        console.log("Comment15");
         $.ajax({
             url: $SCRIPT_ROOT + "/submit_comment",
             data: JSON.stringify({ name: uname, comment: comment, post_id: post_id }),
@@ -71,33 +82,29 @@ $(function() {
             contentType: "application/json; charset=utf-8"
         })
         .done(function(data, status ) {
-            console.log('Where');
-            console.log(JSON.stringify(data));            
             addElement(data);
-            $('#textIdwithOutUser').val('');
+            tinyMCE.activeEditor.setContent('');
             $('#inputId').val('');
             no_of_comments = $('#tc-comments').text();
             no_of_comments = Number(no_of_comments) + 1;
             $('#tc-comments').text(no_of_comments);
         }).fail(function(data, status) {
-            console.log(status);
-            console.log(JSON.stringify(data));
         });
     });
 });
+
+
 
 $(function() { 
     $('#submitWithOutName').click(function() {
         var comment = $('textarea[name="comment"]').val();
         var no_of_comments;
 
-        console.log("New17");
         if (comment == '') {
             alert("Name and Comment should not be empty");
             return;
         }        
-        console.log(comment);
-        console.log("Comment17");
+
         $.ajax({
             url: $SCRIPT_ROOT + "/submit_comment",
             data: JSON.stringify({ comment: comment, post_id: post_id }),
@@ -105,18 +112,13 @@ $(function() {
             datatype: 'json',
             contentType: "application/json; charset=utf-8"
         })
-        .done(function(data, status ) {
-            console.log('Where');
-            console.log(JSON.stringify(data));            
+        .done(function(data, status ) {            
             addElement(data);
             $('#textIdwithUser').val('');
-            no_of_comments = $('#tc-comments').text();
-            console.log(no_of_comments);
+            tinyMCE.activeEditor.setContent('');
             no_of_comments = Number(no_of_comments) + 1;
             $('#tc-comments').text(no_of_comments);                        
         }).fail(function(data, status) {
-            console.log(status);
-            console.log(JSON.stringify(data));
         });
     });
 });
@@ -129,24 +131,20 @@ $(function() {
 //})
 
 $(document).ready(function(){
-    console.log("zonePic");
     $("#zonePic").attr("src", 'football_zones.png');
 })
 
 $(function() {
-    console.log("postPic");
     $('#fbId').width(200);
     $('#fbId').height(25);
 });
 
 $(function() {
-    console.log("postPic");
     $('#twId').width(200);
     $('#twId').height(25);
 });
 
 function withoutUsercheck() {
-    console.log("Reached");
     var txtvalue=$.trim($("#textIdwithOutUser").val());
     var nameValue=$.trim($("#inputId").val());
     if(txtValue > 0 && nameValue > 0) {
@@ -157,7 +155,6 @@ function withoutUsercheck() {
 }
 
 function withUsercheck() {
-    console.log("Reached 1");
     var txtvalue=$.trim($("#textIdwithUser").val());
     if(txtValue > 0) {
       $("#submitWithOutName").prop('disabled', false);
@@ -167,8 +164,6 @@ function withUsercheck() {
 }
 
 function tw_click(twttr, post_url, post_header, post_tag) {
-    console.log("HELLO twttr2");
-    console.log(post_header);
     var twtTitle = document.title;
     var twtUrl = post_url;
     var dataSize = "large";
@@ -188,15 +183,12 @@ function tw_click(twttr, post_url, post_header, post_tag) {
 }
 
 function fb_click(post_url, post_header, post_pic_url) {
-    console.log(post_url);
-    console.log(post_header);
-    console.log(post_pic_url);
    
     //var facebookShrLink = 'https://www.facebook.com/dialog/share?app_id=613455148848789&display=popup&href=' + encodeURIComponent(post_url) + '&redirect_uri=' + encodeURIComponent(post_url);
     FB.ui({
         method: 'share',
         mobile_iframe: true,
-        href: "http://www.tactification.com/post/8",
+        href: post_url,
         quote: post_header
       }, function(response){});
 
@@ -209,10 +201,16 @@ $(document).ready(function(){
     })
   })
 
-function PlayVideo(vId){
+function PlayVideo(vId, isEmbedded){
     var iframe=document.getElementById("iframeYoutube");
-    iframe.src="https://www.youtube.com/embed/"+vId+"?html5=1";
-    $("#myModal").modal("show");
+    if (isEmbedded == 0) {
+        window.open("https://youtu.be/"+vId);
+    } else {
+        iframe.src="https://www.youtube.com/embed/"+vId;
+        $("#myModal").modal("show");
+    }
+    
+
 }
 
 $("#myModal").on('hidden.bs.modal', function (e) {
@@ -220,7 +218,6 @@ $("#myModal").on('hidden.bs.modal', function (e) {
 });
 
 function yt_click(post_id){
-    console.log("Comment17");
     $.ajax({
         url: $SCRIPT_ROOT + "/play_video",
         data: JSON.stringify({ post_id: post_id }),
@@ -229,21 +226,17 @@ function yt_click(post_id){
         contentType: "application/json; charset=utf-8"
     })
     .done(function(data, status ) {
-        console.log('Where');
-        console.log(JSON.stringify(data));
         if (data['result'] == 'pass')
-            if (data['display'] == true)
-                PlayVideo(data['video_id']);
-            else
-                alert('Video will be uploaded in ' + moment(data['date']).fromNow());                            
+            if (data['display'] == true) {
+                PlayVideo(data['video_id'], data['is_embedded']);
+            } else {
+                alert('Video will be uploaded in ' + moment(data['date']).fromNow());     
+            }                       
     }).fail(function(data, status) {
-        console.log(status);
-        console.log(JSON.stringify(data));
     });
 }
 
 function test_field(is_authenticated) {
-    console.log("test_field");
     if (is_authenticated == true) {
         if(document.getElementById("textIdwithUser").value == '') {
             alert("No comments");
@@ -263,15 +256,12 @@ function updateStatusCallback(response) {
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
-      console.alert('Its connected');
     } else {
       // The person is not logged into your app or we are unable to tell.
-        console.alert('Its not authorized');
     }
 }
 
 $(document).ready(function() {
-    console.log('calling fb Init');
     $.ajaxSetup({ cache: true });
     $.getScript('//connect.facebook.net/en_US/sdk.js', function(){
       FB.init({

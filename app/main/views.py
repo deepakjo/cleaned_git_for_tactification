@@ -78,23 +78,19 @@ def submit_comment():
 @main.route('/play_video', methods = ['POST', 'PUT'])
 def play_video():
     post = request.get_json()
+
     try:
         post_id = post['post_id']
     except KeyError:
         return jsonify({'display' : 0})
 
     post = get_post(post_id)
-    print 'post_id', post_id
 
-    print 'timestamp:', post.timestamp
-    print 'timedelta:', timedelta(days=7)
-    print 'utc:', datetime.utcnow()
-    print 'post video', post.ytVideoId
     current_time = datetime.utcnow()
     post_time = post.timestamp
     if (current_time > post_time + timedelta(days=7)):
         return jsonify({'result':'pass', 'display': True,
-                        'video_id':post.ytVideoId})    
+                        'video_id':post.ytVideoId, 'is_embedded': post.get_embedded()})  
     else:
         date_of_posting = post.timestamp + timedelta(days=7)
         return jsonify({'result':'pass', 'display': False, 'date': date_of_posting.strftime("%m/%d/%Y")})

@@ -30,7 +30,7 @@
                                 {% if comment.body_html %}
                                     <h4 class="blog-comment"> {{ comment.body_html | safe }} </h3>
                                 {% else %}
-                                    <h4 class="blog-comment">  {{ comment.body }} </h3>
+                                    <h4 class="blog-comment">  {{ comment.body | safe }} </h3>
                                 {% endif %}
                             </p>
                         </div>
@@ -39,6 +39,7 @@
             </div>
         </div>
     </div>
-    <hr>
+
     {% endfor %}
+    <div class="row" id="div0"></div>
 </div>

@@ -8,6 +8,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from avinit import get_avatar_data_url
+from bleach import clean
 from app import db
 from . import login_manager
 #for pictures and gifs
@@ -260,8 +261,31 @@ class Post(db.Model):
 
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
     ytVideoId = db.Column(db.String(32))
+    is_embedded = db.Column(db.Boolean)
     twTag = db.Column(db.String(32))
+
+    def post_date_in_isoformat(self):
+        date_str = self.timestamp.isoformat()[:10]
+        date_list = date_str.split('-')[::-1]
+        return '{:s}-{:s}-{:s}'.format(date_list[0], date_list[1], date_list[2]) 
+
+    def body_clean(self):
+        start_idx=self.body.find('<div style="color:black">') + self.body.find('>') +1
+        end_idx=self.body.find('</div>') 
+        return (self.body[start_idx:end_idx])
  
+    def set_embedded(self, isEmbedded=0):
+        if isEmbedded == u'0':
+            self.is_embedded = 0
+        else:
+            self.is_embedded = 1
+
+    def get_embedded(self):
+        if (self.is_embedded == False):
+            return False
+        else:
+            return True
+
     def render_tactics_pic(self):
         """
         for passing the url for image to html files. Have to check if it's
@@ -302,7 +326,8 @@ class Post(db.Model):
             'author' : url_for('api.get_user_info', id=self.author_id, _external=True),
             'comments' : url_for('api.get_post_comments', id=self.id, _external=True),
             'comment_count': self.comments.count(),
-            'videoId': self.ytVideoId
+            'videoId': self.ytVideoId,
+            'isEmbedded': self.get_embedded()
         }
         return json_post
  
