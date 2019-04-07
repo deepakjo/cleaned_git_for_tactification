@@ -22,8 +22,12 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" rel="text/javascript">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/animate.min.css') }}">
-	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet"> 
-	<link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet" />	
+    <link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet"> 
+    <!--Asset changes-->
+    {% assets "tactification_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+	<!--link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet" /-->	
     <!-- =======================================================
         Theme Name: Day
         Theme URL: https://bootstrapmade.com/day-multipurpose-html-template-for-free/
@@ -188,9 +192,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/js/index.min.js"></script>
-    <script type="text/javascript" src="../static/js/video.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--Asset-->
+    <!--script type="text/javascript" src="../static/js/index.min.js"></script>
+    <script type="text/javascript" src="../static/js/video.min.js"></script-->
+    {% assets "tactification_js_home" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
 
 
 </body>

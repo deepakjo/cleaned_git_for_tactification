@@ -64,7 +64,8 @@ function addElement(comment_in_json) {
 }
 
 $(function() { 
-    $('#submitWithName').click(function() {
+    $('#submitWithName').submit(function() {
+        console.log('submitWithName');
         var uname = $('input[name="uname"]').val();
         var comment = $('textarea[name="comment"]').val();
         var no_of_comments;
@@ -96,7 +97,8 @@ $(function() {
 
 
 $(function() { 
-    $('#submitWithOutName').click(function() {
+    $('#submitWithOutName').submit(function() {
+        console.log('submitWithName');
         var comment = $('textarea[name="comment"]').val();
         var no_of_comments;
 

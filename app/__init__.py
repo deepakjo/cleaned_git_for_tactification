@@ -4,6 +4,8 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_pagedown import PageDown
+from flask import Flask, render_template
+from flask_assets import Bundle, Environment
 from config import config
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from config_glb_vars import photos
@@ -17,6 +19,10 @@ login_manager.login_view = 'auth.login'
 photos = UploadSet('photos', IMAGES)
 gifs = UploadSet('gifs', IMAGES)
 pagedown = PageDown()
+js_home = Bundle('js/index.js', 'js/video.js', output='js/tactification_home.js', filters='jsmin')
+#js_post = Bundle('js/post.js', 'js/video.js', output='js/tactification_post.js', filters='jsmin')
+css = Bundle('css/style.css', output='css/tactification.css', filters='cssmin')
+
 print 'Reaching'
 
 def create_app(config_name):
@@ -36,7 +42,11 @@ def create_app(config_name):
 
     login_manager.init_app(app)
     pagedown.init_app(app)
-
+    assets = Environment(app)
+    assets.register('tactification_js_home', js_home)
+    #assets.register('tactification_js_post', js_post)
+    assets.register('tactification_css', css)
+    
     from main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

@@ -2,15 +2,6 @@
 <html lang="en">
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111663409-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-111663409-1');
-</script>
     <title>{{ post.header }}</title>   
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,7 +24,10 @@
 
     <link href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet">
+    <!--Asset changes-->
+    {% assets "tactification_css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
     <script type="text/javascript" src="../static/js/tinymce/tinymce.min.js"></script>   
     <script>tinymce.init({  selector:'#textIdwithOutUser',        
                             statusbar: false,
@@ -285,6 +279,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+
     <script type="text/javascript" src="../static/js/post.min.js"></script>
     <script type="text/javascript" src="../static/js/video.min.js"></script>
     <script>window.twttr = (function(d, s, id) {
