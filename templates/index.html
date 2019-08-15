@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Flask assets</title>
+        {% assets "tactification_css" %}
+        <link type="text/css" href="{{ ASSET_URL }}">
+        {% endassets %}
+    </head>
+    <body>
+        <h1>Example</h1>
+        {% assets "tactification_js"}
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        {% endassets %}
+    </body>
+</html>

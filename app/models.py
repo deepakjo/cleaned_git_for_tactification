@@ -3,6 +3,7 @@ all db classes and attributes are defined in this function
 """
 from datetime import datetime
 from random import sample
+from HTMLParser import HTMLParser
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app, url_for

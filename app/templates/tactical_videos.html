@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111663409-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-111663409-1');
+</script>
+      
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Tactification</title>
+
+    <!-- Bootstrap -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" rel="text/javascript">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/animate.min.css') }}">
+	<!--link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet"> 
+    <link href="{{ url_for('static', filename = 'css/style.min.css') }}" rel="stylesheet" /-->	
+    {% assets "tactification_css" %}
+    <link type="text/css" href="{{ ASSET_URL }}">
+    {% endassets %}
+    <!-- =======================================================
+        Theme Name: Day
+        Theme URL: https://bootstrapmade.com/day-multipurpose-html-template-for-free/
+        Author: BootstrapMade
+        Author URL: https://bootstrapmade.com
+    ======================================================= -->
+    </head>
+
+<script>
+    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+  <body>
+    {% import "bootstrap/wtf.html" as wtf %}
+    {% import "_macros.html" as macros %}
+
+	<header id="header">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle nav-css" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    MENU <i class="menu fa fa-bars"></i>
+                </button>
+                <a id="site-btn" class="navbar-brand" href="{{ url_for('.index') }}">
+                    <h4 class="nav-css">TACTIFICATION</h4>
+                </a>                      
+              </div> <!--navbar header-->
+              <div class="collapse navbar-collapse navbar-main-collapse">
+                  <ul class="nav navbar-nav">
+                    <li id="home-btn">
+                        <a href="{{ url_for('.index') }}">
+                            <h4 class="nav-css">HOME</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('.videos') }}">
+                            <h4 class="nav-css">VIDEOS</h4>
+                        </a>
+                    </li>
+                    <li id="home-btn">
+                        <a href="{{ url_for('.articles') }}">
+                            <h4 class="nav-css">ARTICLES</h4>
+                        </a>
+                    </li>
+                  </ul>
+              </div> <!-- navbar collapse -->
+            </div>
+          </nav> 
+    </header><!--/header-->	
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="col-sm-9">
+            <a class="twitter-timeline" 
+               data-width="1000" 
+               data-border-color="#1DA1F2"
+               data-chrome="noheader"
+               href="https://twitter.com/tactification1?ref_src=twsrc%5Etfw">Tweets by tactification1</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+    </div>
+
+    <br>
+
+	{% include "index_signin.html" %}
+	
+
+{% include "footer_file.html" %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% assets "tactification_css" %}
+    <link type="text/css" href="{{ ASSET_URL }}">
+    {% endassets %}
+    <!--script type="text/javascript" src="../static/js/index.min.js"></script>
+    <script type="text/javascript" src="../static/js/video.min.js"></script-->
+
+
+</body>
+</html>
