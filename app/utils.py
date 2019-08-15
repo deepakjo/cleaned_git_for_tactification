@@ -5,7 +5,7 @@ from random import sample
 from flask_login import current_user
 from avinit import get_avatar_data_url
 from app import db
-from .models import Comment, Post, CommentHtmlParser
+from .models import Comment, Post
 from .main import main
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
