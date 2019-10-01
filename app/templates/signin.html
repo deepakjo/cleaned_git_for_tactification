@@ -1,0 +1,36 @@
+	<header id="header">
+            <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                      <div class="navbar-header">
+                        <a id="site-btn" class="navbar-brand" href="{{ url_for('.index') }}">
+                            <h4 class="nav-css">Tactification.com</h4>
+                        </a>                      
+                      </div>
+                      <ul class="nav navbar-nav">
+                        <li id="home-btn">
+                            <a href="{{ url_for('.index') }}">
+                                <h4 class="nav-css">Home</h4>
+                            </a>
+                        </li>
+                        <li id="home-btn">
+                            <a href="{{ url_for('.blog_index') }}">
+                                <h4 class="nav-css">Blogs</h4>
+                            </a>
+                        </li>
+                      </ul>
+                      <ul class="nav navbar-nav navbar-right">
+                        <li>
+                        {% if current_user.is_authenticated %}
+                            <a id="signout-btn" href="{{ url_for('auth.logout') }}">
+                            <h4 class="nav-css">Sign Out</h4></a>
+                            </a>
+                        {% else %}
+                            <a id="signin-btn" href="{{ url_for('auth.login') }}"> 
+                            <h4 class="nav-css">Sign In</h4>
+                            </a>
+                        {% endif %}     
+                        </li>                     
+                      </ul>
+                    </div>
+                  </nav> 
+    </header><!--/header-->	

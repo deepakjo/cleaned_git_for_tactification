@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+{% include "header_script.html" %}
+
+  <body>
+    {% import "_macros.html" as macros %}
+    {% include "signin.html" %}
+
+    <div class="container marketing">
+      <!-- START THE FEATURETTES -->
+      {% set new_container = 0 %}
+      {% for post in posts %}
+      
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <a id="post-{{post.id}}" href="{{ url_for('.post', id=post.id) }}">
+        {% if new_container is divisibleby 2 %}
+        <div class="col-md-7">
+        {% else %}
+        <div class="col-md-7 col-md-push-5">  
+        {% endif %}
+          <h2 class="featurette-heading">{{ post.header }}</h2>
+          <p class="lead">{{ post.body | safe }}</p>
+        </div>
+        {% if new_container is divisibleby 2 %}
+        <div class="col-md-5">
+            <img class="featurette-image img-responsive center-block" src="{{ post.render_tactics_pic() }}" alt="Generic placeholder image">
+        {% else %}
+        <div class="col-md-5 col-md-pull-7">
+            <img class="featurette-image img-responsive center-block" src="{{ post.render_tactics_pic() }}" alt="Generic placeholder image">
+        {% endif %}
+        </div>
+        </a>
+      </div>
+      {% set new_container = new_container + 1 %} 
+      {% endfor %}
+
+      <!--div class="row featurette">
+        <div class="col-md-7 col-md-push-5">
+          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
+          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+        </div>
+        <div class="col-md-5 col-md-pull-7">
+          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+        </div>
+      </div-->
+
+
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      {% if pagination %}
+        <div class="text-center">
+            <div class="pagination">
+                {{ macros.pagination_widget(pagination, '.index') }}
+            </div>
+        </div>
+      {% endif %}
+
+    </div><!-- /.container -->
+
+    {% include "footer_file.html" %}
+    
+    <br>
+    
+    {% include "footer_script.html" %}
+    
+  </body>
+</html>

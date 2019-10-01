@@ -37,7 +37,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    MAIL_SERVER = 'smtp.mail.yahoo.com'
+    MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
@@ -49,6 +49,8 @@ class DevelopmentConfig(Config):
     FLASKY_POSTS_PER_PAGE = 9
     FLASKY_COMMENTS_PER_PAGE = 30
     FLASKY_FOLLOWERS_PER_PAGE = 10
+    FLASKY_MAIL_SUBJECT_PREFIX = '[Tactification]'
+    FLASKY_MAIL_SENDER = 'Flasky Admin <tactifiation@gmail.com'
     OAUTH_CREDENTIALS = {'facebook': {'id': os.environ.get('FB_ID'),
                                       'secret': os.environ.get('FB_SECRET')},
                          'twitter': {'id': os.environ.get('TW_ID'),

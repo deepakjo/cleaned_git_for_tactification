@@ -10,10 +10,7 @@
         	<div class="modal-body">
 	         	<form>
 					<div class="text-center">
-					<!--button id="fb-login-btn" class="btn btn-lg login-button" style="background-color:#3B5998" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='facebook', post_id=post.id) }}">
-						<i class="fa fa-facebook-square fa-lg" style="color:#FFFFFF"></i> Login with facebook</button-->	
-					<button id="tw-login-btn" class="btn btn-lg login-button" style="background-color:#00aced" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='twitter', post_id=post.id) }}">
-						<i class="fa fa-twitter-square fa-lg" style="color:#FFFFFF"></i> Login with Twitter </button>
+						{{ url_for('auth.login') }}
 					</div>
         		</form> 
 			</div>

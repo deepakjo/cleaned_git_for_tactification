@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="SigninModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
 
@@ -8,15 +9,52 @@
 			</div>
 			
         	<div class="modal-body">
-	         	<form>
-					<div class="text-center">
-					<button id="fb-login-btn" class="btn btn-lg login-button" style="background-color:#3B5998" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='facebook', post_id=-1) }}">
-						<i class="fa fa-facebook-square fa-lg" style="color:#FFFFFF"></i> Login with facebook</button>	
-					<hr>					
-					<button id="tw-login-btn" class="btn btn-lg login-button" style="background-color:#00aced" formaction="{{ url_for('oauth_rt.oauth_authorize', provider='twitter', post_id=-1) }}">
-						<i class="fa fa-twitter-square fa-lg" style="color:#FFFFFF"></i> Login with Twitter </button>
-					</div>
-        		</form> 
+				<form id="signin">
+					<h4 color="black">Username:</h4>
+					<input style="color:black" type="text" name="emailid">
+					<br>
+					<h4 color="black">Password:</h4>
+					<input style="color: black"  type="password" name="password">
+					<br>
+					<br>
+					<input style="color:black" type="submit" value="Submit">
+					<br>
+					<a id="register-btn" data-toggle="modal" data-target="#RegisterModal" href="#"> 
+						<h4 class="nav-css">Create account</h4>
+					</a>
+				</form> 
+			</div>
+        	<div class="modal-footer">
+          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	</div>
+        </div>
+   	</div>
+</div>
+
+<div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+
+    	  <!-- Modal content-->
+      	<div class="modal-content">
+        	<div class="modal-header">
+          		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			
+        	<div class="modal-body">
+				<form id="register">
+					<h4 color="black">Username:</h4>
+					<input style="color:black" type="text" name="remailid">
+					<br>
+					<h4 color="black">Password:</h4>
+					<input style="color: black"  type="password" name="rpassword">
+					<br>
+					<h4 color="black">Confirm Password:</h4>
+					<input style="color: black"  type="password" name="rcpassword">
+					<br>
+					<br>
+					<input style="color:black" type="submit" value="Submit">
+					<br>
+				</form> 
 			</div>
         	<div class="modal-footer">
           		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -1,0 +1,3 @@
+home/deepak/bootstrap/bootstrap_src_code/bootstrap-3.3.7/docs/examples/signin/index.html
+file:///home/deepak/bootstrap/bootstrap_src_code/bootstrap-3.3.7/docs/examples/blog/index.html
+file:///home/deepak/bootstrap/bootstrap_src_code/bootstrap-3.3.7/docs/examples/carousel/index.html

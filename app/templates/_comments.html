@@ -9,7 +9,7 @@
                             src="{{ get_anonymous_pic(comment.anonymous_user_name) }}" style="width:60px">
                     {% else %}
                         <img class="media-object"
-                                src="{{ comment.author.profile_pic_url(photo_url) }}" style="width:60px">
+                            src="{{ get_anonymous_pic(comment.anonymous_user_name) }}" style="width:60px">
                     {% endif %}
                 </div>
                 <div class="media-body">

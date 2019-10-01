@@ -122,6 +122,31 @@ def post(id):
                            comments = comments, pagination=pagination,
                            rand_posts = rand_posts, no_of_comments=post.comments.count())
 
+@main.route('/blog_index', methods=['GET', 'POST'])
+def blog_index():
+    print 'reached blog_index'
+    post_list = []
+
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    print 'POSTS', posts
+    page = request.args.get('page', 1, type=int)
+    if posts.__len__() == 0:
+        pagination = get_pages(page=page)
+        return render_template('index.html', posts=post_list, pagination=pagination)
+
+    now_running=posts[0]
+        
+    pagination = get_pages(page=page)
+    posts = pagination.items
+
+    for post in posts:
+        if isinstance(post.author, User):
+            post_list.append(post)
+
+    posts = posts[1:]
+    print 'posts', posts
+    return render_template('blog_index.html', posts=posts, pagination=pagination)
+
 @main.app_context_processor
 def inject_permissions():
     return dict(Permission=Permission)

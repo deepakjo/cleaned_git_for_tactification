@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "header_script.html" %}
+
+<body>
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "auth/signin.html" %}
+
+<title>Register</title>
+
+{% block page_content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Register</h1>
+    </div>
+    <div class="col-md-4">
+        {{ wtf.quick_form(form, id="wtfForm") }}
+    </div>
+</div>
+{% endblock %}
+
+{% include "footer_file.html" %}
+
+<br>
+
+{% include "footer_script.html" %}
+
+</body>
+</html>

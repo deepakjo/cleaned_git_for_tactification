@@ -103,7 +103,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-
+    
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -113,7 +113,6 @@ class User(db.Model, UserMixin):
         """
         password setter
         """
-        print password
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
@@ -127,6 +126,18 @@ class User(db.Model, UserMixin):
         username
         """
         return '<User %r>' % self.username
+    
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
 
     def member_since_join(self):
         """
@@ -149,7 +160,8 @@ class User(db.Model, UserMixin):
         """
         have sufficient permissions
         """
-        return self is not None and (self.role.permissions & permissions == permissions)
+        print('Permissions: {:d} passed permissions: {:d}'.format(self.role.permissions, permissions))
+        return self is not None and (self.role.permissions and self.role.permissions & permissions)
 
     def is_administrator(self):
         """
@@ -425,12 +437,16 @@ class Comment(db.Model):
         """
         api to convert to json for rest apis and ajax calls
         """
+
+        # will add if profile pic is mandatory while registering.
+        #else:
+        #    profile_pic_url = self.author.profile_pic_url()
         if self.by_anonymous:
-            profile_pic_url = self.get_anonymous_pic(self.anonymous_user_name)
             uname = self.anonymous_user_name
         else:
-            profile_pic_url = self.author.profile_pic_url()
             uname = self.author.username
+
+        profile_pic_url = self.get_anonymous_pic(uname)
 
         json_post = {
             'url' : url_for('api.api_rt_get_post', id=self.post_id, _external=True),

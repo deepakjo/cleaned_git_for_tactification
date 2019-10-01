@@ -64,8 +64,7 @@ function addElement(comment_in_json) {
 }
 
 $(function() { 
-    $('#submitWithName').submit(function() {
-        console.log('submitWithName');
+    $('#submitWithName').click(function() {
         var uname = $('input[name="uname"]').val();
         var comment = $('textarea[name="comment"]').val();
         var no_of_comments;
@@ -94,11 +93,8 @@ $(function() {
     });
 });
 
-
-
 $(function() { 
-    $('#submitWithOutName').submit(function() {
-        console.log('submitWithName');
+    $('#submitWithOutName').click(function() {
         var comment = $('textarea[name="comment"]').val();
         var no_of_comments;
 
@@ -114,9 +110,10 @@ $(function() {
             datatype: 'json',
             contentType: "application/json; charset=utf-8"
         })
-        .done(function(data, status ) {            
+        .done(function(data, status ) {  
+            alert('got reply');          
             addElement(data);
-            $('#textIdwithUser').val('');
+            $('#inputId').val('');
             tinyMCE.activeEditor.setContent('');
             no_of_comments = Number(no_of_comments) + 1;
             $('#tc-comments').text(no_of_comments);                        
@@ -184,8 +181,7 @@ function tw_click(twttr, post_url, post_header, post_tag) {
     //<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Football is my religion" data-via="deepakpjose" data-hashtags="football" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script-->
 }
 
-function fb_click(post_url, post_header, post_pic_url) {
-   
+function fb_click(post_url, post_header, post_pic_url) {  
     //var facebookShrLink = 'https://www.facebook.com/dialog/share?app_id=613455148848789&display=popup&href=' + encodeURIComponent(post_url) + '&redirect_uri=' + encodeURIComponent(post_url);
     FB.ui({
         method: 'share',
@@ -193,7 +189,6 @@ function fb_click(post_url, post_header, post_pic_url) {
         href: post_url,
         quote: post_header
       }, function(response){});
-
     //window.open(facebookShrLink);
 }
 
@@ -201,9 +196,9 @@ $(document).ready(function(){
     $("#myModal").on("shown.bs.modal",function(){
        $('#myModal').removeClass('in');
     })
-  })
+})
 
-function PlayVideo(vId, isEmbedded){
+function PlayVideo(vId, isEmbedded) {
     var iframe=document.getElementById("iframeYoutube");
     if (isEmbedded == 0) {
         window.open("https://youtu.be/"+vId);
@@ -211,8 +206,6 @@ function PlayVideo(vId, isEmbedded){
         iframe.src="https://www.youtube.com/embed/"+vId;
         $("#myModal").modal("show");
     }
-    
-
 }
 
 $("#myModal").on('hidden.bs.modal', function (e) {
