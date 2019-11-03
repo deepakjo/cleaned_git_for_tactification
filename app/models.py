@@ -6,7 +6,7 @@ from random import sample
 from HTMLParser import HTMLParser
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app, url_for
+from flask import current_app, url_for, Markup
 from flask_login import UserMixin, AnonymousUserMixin
 from avinit import get_avatar_data_url
 from bleach import clean
@@ -259,6 +259,7 @@ class Post(db.Model):
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     header = db.Column(db.String(32))
+    description = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # using flask-uploads
     # This is used for main page
@@ -276,6 +277,8 @@ class Post(db.Model):
     ytVideoId = db.Column(db.String(32))
     is_embedded = db.Column(db.Boolean)
     twTag = db.Column(db.String(32))
+    tags = db.Column(db.String(32))
+    is_blog = db.Column(db.Boolean)
 
     def post_date_in_isoformat(self):
         date_str = self.timestamp.isoformat()[:10]
@@ -298,6 +301,9 @@ class Post(db.Model):
             return False
         else:
             return True
+
+    def markup_body(self):
+        return Markup(self.body)
 
     def render_tactics_pic(self):
         """
@@ -418,7 +424,7 @@ class Comment(db.Model):
         
         self.by_anonymous = by_anonymous
 
-    def get_anonymous_pic(self, username):
+    def get_anonymous_pic(self, username, anonymous=True):
         if username is None:
             print 'returning'
             return
@@ -428,8 +434,12 @@ class Comment(db.Model):
         for color in color_list:
             colors.append(DEFAULT_COLORS[color])
 
-        print 'colors:', colors
-        print 'name:', username
+        if anonymous is False:
+            user =  User.query.filter_by(id=self.author_id).first()
+            if user is None:
+                return
+            username = user.username
+            
         data = get_avatar_data_url(username, colors=colors)
         return data
 

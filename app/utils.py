@@ -46,6 +46,7 @@ def get_comment_fields_in_json(body, author_name=None, by_anonymous=False):
     comment['body'] = body
     if current_user.is_authenticated:
         auth_details['author_obj'] = current_user._get_current_object()
+        print auth_details['author_obj'].__dict__
         
     else:
         if author_name is None:

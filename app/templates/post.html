@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <!-- facebook meta fields-->
-    <meta property="fb:app_id" content="966242223397117" />
+    <meta property="fb:app_id" content="1137026383161432" />
     <meta property="og:url" content="{{ url_for('main.post', id=post.id, _external=True) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ post.header }}"/>
@@ -23,7 +23,8 @@
 
 
     <link href="{{ url_for('static', filename = 'css/bootstrap.min.css') }}" rel="stylesheet">
-	<link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/favicon.ico">
     <!--Asset changes-->
     {% assets "tactification_css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}">
@@ -59,6 +60,7 @@
                              } 
                          });
     </script>
+    <script async src="https://platform-api.sharethis.com/js/sharethis.js#property=5db2a0631ad4ba0016b305f6&product=sticky-share-buttons"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -89,7 +91,7 @@
 
 
     <!-- Page Content -->
-    <div class="container-fluid">
+    <div class="container-fluid custom-container">
         <div class="col-sm-9">
         <!-- To find proper position for picture-->
         <div class="row">
@@ -131,8 +133,8 @@
             <div class="col-xs-12">
                 <ul class="share">       
                     <li><button id="yt-shareBtn" class="yt-button" aria-hidden="true" type="button" onclick="yt_click(post_id)"></button></li>             
-                    <li><button id="fb-shareBtn" class="fb-button" aria-hidden="true" type="button" onclick="fb_click(post_url, post_hdr, post_pic_url)"></button></li>
-                    <li><button id="tw-shareBtn" class="tw-button" aria-hidden="true" type="button" onclick="tw_click(twttr, post_url, post_hdr, post_tag)"></button></li>               
+                    <!--li><button id="fb-shareBtn" class="fb-button" aria-hidden="true" type="button" onclick="fb_click(post_url, post_hdr, post_pic_url)"></button></li>
+                    <li><button id="tw-shareBtn" class="tw-button" aria-hidden="true" type="button" onclick="tw_click(twttr, post_url, post_hdr, post_tag)"></button></li-->               
                 </ul>    
             </div>
         </div>
@@ -255,7 +257,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 
-    <script type="text/javascript" src="../static/js/post.js"></script>
+    <!--script type="text/javascript" src="../static/js/post.js"></script-->
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/post.js') }}"></script>
     <script type="text/javascript" src="../static/js/video.min.js"></script>
     <script>window.twttr = (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0],

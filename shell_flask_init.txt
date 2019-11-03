@@ -14,3 +14,4 @@ admin = User(email=os.getenv('FLASK_ADMIN'), username=os.getenv('FLASK_ADMIN'),p
 db.session.add(admin)
 db.session.commit()
 
+users = User.query.order_by().all()

@@ -7,10 +7,13 @@
 
     <!-- Bootstrap -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" rel="text/javascript">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" rel="text/javascript">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename = 'css/font-awesome.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'css/animate.min.css') }}">
     <link href="{{ url_for('static', filename = 'css/animate.min.css') }}" rel="stylesheet"> 
+    <link rel="shortcut icon" href="/static/favicon.ico">
+    
     <!--Asset changes-->
     {% assets "tactification_css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}">

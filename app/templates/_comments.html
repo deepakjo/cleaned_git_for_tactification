@@ -5,11 +5,9 @@
             <div class="media">
                 <div class="media-left media-top">
                     {% if comment.by_anonymous %}
-                        <img class="media-object"
-                            src="{{ get_anonymous_pic(comment.anonymous_user_name) }}" style="width:60px">
+                        <img class="media-object" src="{{ comment.get_anonymous_pic(comment.anonymous_user_name, True) }}" style="width:60px">
                     {% else %}
-                        <img class="media-object"
-                            src="{{ get_anonymous_pic(comment.anonymous_user_name) }}" style="width:60px">
+                        <img class="media-object" src="{{ comment.get_anonymous_pic(comment.username, False) }}" style="width:60px">
                     {% endif %}
                 </div>
                 <div class="media-body">

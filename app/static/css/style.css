@@ -1221,3 +1221,7 @@ i {
   margin: 1em 0;
   padding: 0; 
 }
+
+.container-fluid.custom-container {
+  padding: 0 50px;
+}

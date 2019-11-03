@@ -1,28 +1,26 @@
 """
 All custom login and logout apis are defined here.
 """
-from flask import redirect, url_for, request, session, render_template, flash, jsonify
+from flask import redirect, url_for, request, session, render_template, flash, jsonify, abort
 from flask_login import current_user, login_required, login_user, logout_user
 from .. import db
 from ..models import User, Permission, Role
 from ..main.mail import send_email
-from . forms import LoginForm, RegistrationForm, PasswordResetRequestForm
+from . forms import LoginForm, RegistrationForm, PasswordResetRequestForm, PasswordResetForm
 from . import auth
 
 @auth.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
-    print 'login'
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         users = User.query.all()
-        print 'users:', users
         if user is not None and user.verify_password(form.password.data):
-            print '{:s} logged in'.format(user)
-            login_user(user, form.remember_me.data)
-            print 'current user', current_user.is_authenticated
+            if (login_user(user, remember=form.remember_me.data) is False):
+                return abort(403)
+            flash('Successfully logged in.')
             return redirect(request.args.get('next') or url_for('main.index'))
-        print 'Invalid username or password.'
+        flash('Invalid username or password.')
     return render_template('auth/login.html', form=form)
 
 @auth.route('/logout', methods=['GET'])
@@ -37,10 +35,12 @@ def logout():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    print 'register'
     r=Role.query.all()
-    print 'roles:', r
     if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            flash('Email has been already been used.')
+            return redirect(url_for('auth.login'))
         if form.email.data == 'tactification@gmail.com':
             r=Role.query.filter_by(permissions=Permission.ADMINISTER | \
                                                Permission.COMMENT | \
@@ -49,7 +49,6 @@ def register():
         else:
             r=Role.query.filter_by(permissions=Permission.COMMENT).first()
 
-        print 'role:', r.permissions
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data,
@@ -82,8 +81,6 @@ def confirm(token):
 
 @auth.before_app_request
 def before_request():
-    print 'before app request', current_user
-    print 'current-user authenticated?', current_user.is_authenticated
     if current_user.is_anonymous is False:
         print 'current user confirmed?', current_user.confirmed
     
@@ -135,13 +132,15 @@ def password_reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            token = user.generate_reset_token()
+            token = user.generate_confirmation_token()
             send_email(user.email, 'Reset Your Password',
                        'auth/email/reset_password',
                        user=user, token=token,
                        next=request.args.get('next'))
-        flash('An email with instructions to reset your password has been '
-              'sent to you.')
+            flash('An email with instructions to reset your password has been '
+                  'sent to you.')
+        else:
+            flash('This email is not registered with us.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
@@ -154,7 +153,8 @@ def password_reset(token):
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
             return redirect(url_for('main.index'))
-        if user.reset_password(token, form.password.data):
+        if user.confirm(token):
+            user.password = form.password.data
             flash('Your password has been updated.')
             return redirect(url_for('auth.login'))
         else:

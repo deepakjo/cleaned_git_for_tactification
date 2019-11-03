@@ -25,7 +25,6 @@ js_home = Bundle('js/index.js', 'js/video.js', output='js/tactification_home.js'
 js_post = Bundle('js/post.js', output='js/tactification_post.js', filters='jsmin')
 css = Bundle('css/style.css', output='css/tactification.css', filters='cssmin')
 blog_post_css = Bundle('css/blog_index.css', output='css/tactification_blog_index.css', filters='cssmin')
-
 print 'Reaching'
 
 def create_app(config_name):

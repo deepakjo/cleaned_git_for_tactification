@@ -5,10 +5,10 @@ from wtforms import ValidationError
 from ..models import User
 
 class LoginForm(Form):
-    email = StringField('Email', validators=[Required(), Length(1,64), Email()])
+    email = StringField('Email', validators=[Required(), Length(1,64), Email()], render_kw={'class':'form-control', 'placeholder':'Email'})
     password = PasswordField('Password', validators=[Required()])
     remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log In')
+    submit = SubmitField('Log In', render_kw={'style':'background-color:#12A8EE', 'class':'form-control', 'placeholder':'Email'})
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64),
@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[
         Required(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[Required()])
-    submit = SubmitField('Register')
+    submit = SubmitField('Register', render_kw={'style':'background-color:#12A8EE'})
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
@@ -35,13 +35,13 @@ class ChangePasswordForm(FlaskForm):
     password = PasswordField('New password', validators=[
         Required(), EqualTo('password2', message='Passwords must match')])
     password2 = PasswordField('Confirm new password', validators=[Required()])
-    submit = SubmitField('Update Password')
+    submit = SubmitField('Update Password', render_kw={'style':'background-color:#12A8EE'})
 
 
 class PasswordResetRequestForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                              Email()])
-    submit = SubmitField('Reset Password')
+    submit = SubmitField('Reset Password', render_kw={'style':'background-color:#12A8EE'})
 
 
 class PasswordResetForm(FlaskForm):
@@ -50,8 +50,4 @@ class PasswordResetForm(FlaskForm):
     password = PasswordField('New Password', validators=[
         Required(), EqualTo('password2', message='Passwords must match')])
     password2 = PasswordField('Confirm password', validators=[Required()])
-    submit = SubmitField('Reset Password')
-
-    def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first() is None:
-            raise ValidationError('Unknown email address.')
+    submit = SubmitField('Reset Password', render_kw={'style':'background-color:#12A8EE'})
