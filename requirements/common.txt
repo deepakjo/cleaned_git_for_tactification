@@ -22,7 +22,7 @@ MarkupSafe==0.23
 Pygments==2.2.0
 SQLAlchemy==1.1.4
 WTForms==2.1
-Werkzeug==0.11.13
+Werkzeug==0.15.3
 alembic==0.8.9
 aniso8601==1.2.1
 argparse==1.2.1
