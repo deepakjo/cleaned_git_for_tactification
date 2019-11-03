@@ -31,7 +31,7 @@ ForgeryPy==0.1
 funcsigs==1.0.2
 functools32==3.2.3.post2
 html5lib==0.9999999
-httpie==0.9.9
+httpie==1.0.3
 httpie-oauth==1.0.2
 httplib2==0.10.3
 isort==4.2.15
